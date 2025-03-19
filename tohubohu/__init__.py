@@ -12,7 +12,6 @@ __all__ = [
 ]
 
 from tohubohu.functional import nest
-from tohubohu.sympint.functional import nest_list
+from tohubohu.functional import nest_list
 from tohubohu.functional import fold
 from tohubohu.functional import fold_list
-
