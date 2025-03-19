@@ -1,0 +1,56 @@
+[project]
+name = "tohubohu"
+description = "JAX composable differentiable chaos indicators" 
+readme = "README.MD"
+requires-python = ">=3.12"
+keywords = ["jax", "composable", "differentiable", "chaos", "indicator"]
+authors = [{name = "Ivan Morozov"}]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12"
+]
+dependencies = ["jax>=0.5.0"]
+dynamic = ["version"]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm[toml]", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tohubohu"]
+
+[tool.setuptools.dynamic]
+version = {attr = "tohubohu.__version__"}
+
+[project.optional-dependencies]
+docs = ["pandoc", "sphinx-rtd-theme", "ipykernel", "nbsphinx"]
+
+[tool.pylint.'MESSAGES CONTROL']
+disable=[
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "useless-suppression",
+    "deprecated-pragma",
+    "use-symbolic-message-instead",
+    "function-redefined",
+    "no-value-for-parameter",
+    "no-member",
+    "redefined-builtin",
+    "unused-argument",
+    "invalid-name",
+    "too-many-locals",
+    "redefined-outer-name",
+    "not-callable"
+]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]
