@@ -8,10 +8,13 @@ __all__ = [
     'nest',
     'nest_list',
     'fold',
-    'fold_list'
+    'fold_list',
+    'rem'
 ]
 
 from tohubohu.functional import nest
 from tohubohu.functional import nest_list
 from tohubohu.functional import fold
 from tohubohu.functional import fold_list
+
+from tohubohu.rem import rem

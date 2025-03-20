@@ -8,8 +8,8 @@ Reverse error method indicator factory
 from typing import Callable
 from typing import Any
 
-import jax
 from jax import Array
+from jax.numpy.linalg import norm
 
 from tohubohu.functional import nest
 
@@ -37,5 +37,5 @@ def rem(n:int,
 
     """
     def closure(x: Array, *args: Any) -> Array:
-        return jax.numpy.linalg.norm(x - nest(n, inverse)(nest(n, forward)(x, *args) + epsilon, *args))
+        return norm(x - nest(n, inverse)(nest(n, forward)(x, *args) + epsilon, *args))
     return closure
