@@ -9,7 +9,10 @@ __all__ = [
     'nest_list',
     'fold',
     'fold_list',
-    'rem'
+    'rem',
+    'exponential',
+    'cosine',
+    'kaiser'
 ]
 
 from tohubohu.functional import nest
@@ -18,3 +21,7 @@ from tohubohu.functional import fold
 from tohubohu.functional import fold_list
 
 from tohubohu.rem import rem
+
+from tohubohu.filter import exponential
+from tohubohu.filter import cosine
+from tohubohu.filter import kaiser
