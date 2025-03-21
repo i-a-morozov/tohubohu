@@ -13,7 +13,10 @@ JAX composable differentiable chaos indicators
    :caption: API:
    :maxdepth: 1
 
+   modules/utils.rst
    modules/functional.rst
+   modules/rem.rst
+   modules/filter.rst
 
 Indices and tables
 ==================
