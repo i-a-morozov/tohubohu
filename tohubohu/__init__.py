@@ -12,7 +12,8 @@ __all__ = [
     'rem',
     'exponential',
     'cosine',
-    'kaiser'
+    'kaiser',
+    'frequency'
 ]
 
 from tohubohu.functional import nest
@@ -25,3 +26,5 @@ from tohubohu.rem import rem
 from tohubohu.filter import exponential
 from tohubohu.filter import cosine
 from tohubohu.filter import kaiser
+
+from tohubohu.frequency import frequency
