@@ -19,6 +19,7 @@ JAX composable differentiable chaos indicators
    modules/functional.rst
    modules/rem.rst
    modules/filter.rst
+   modules/frequency.rst
 
 Indices and tables
 ==================

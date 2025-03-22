@@ -25,9 +25,9 @@ def rem(n:int,
     n: int
         number of iterations to perform
     forward: Callable[[Array, *Any], Array]
-        forwart state transformation mapping
+        forward state transformation mapping
     inverse: Callable[[Array, *Any], Array]
-        forwart state transformation mapping
+        inverse state transformation mapping
     epsilon:float, default=1.0E-16
         perturbation epsilon
 
