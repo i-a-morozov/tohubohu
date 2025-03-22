@@ -5,7 +5,7 @@ JAX composable differentiable chaos indicators
 # Install
 
 ```
-$ pip install git+https://github.com/i-a-morozov/tohuhohu.git@main
+$ pip install git+https://github.com/i-a-morozov/tohubohu.git@main
 ```
 
 # Documentation
