@@ -1,2 +1,2 @@
-.. automodule:: sympint.functional
+.. automodule:: tohubohu.functional
     :members:
