@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; tohubohu  documentation</title>
+  <title>Functional &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="rem.html" />
+    <link rel="next" title="REM" href="rem.html" />
     <link rel="prev" title="Example-05: Frequency (Jacobian)" href="../examples/example-04.html" /> 
 </head>
 
@@ -51,6 +51,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-03.html">Example-04: Frequency</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-04.html">Example-05: Frequency (Jacobian)</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.functional.fold"><code class="docutils literal notranslate"><span class="pre">fold()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.functional.fold_list"><code class="docutils literal notranslate"><span class="pre">fold_list()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.functional.nest"><code class="docutils literal notranslate"><span class="pre">nest()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.functional.nest_list"><code class="docutils literal notranslate"><span class="pre">nest_list()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="rem.html">REM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rem.html#tohubohu.rem.rem"><code class="docutils literal notranslate"><span class="pre">rem()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html">Filter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.cosine"><code class="docutils literal notranslate"><span class="pre">cosine()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.exponential"><code class="docutils literal notranslate"><span class="pre">exponential()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.kaiser"><code class="docutils literal notranslate"><span class="pre">kaiser()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="frequency.html">Frequency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frequency.html#tohubohu.frequency.frequency"><code class="docutils literal notranslate"><span class="pre">frequency()</span></code></a></li>
+</ul>
 
         </div>
       </div>
@@ -66,7 +82,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">&lt;no title&gt;</li>
+      <li class="breadcrumb-item active">Functional</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/modules/functional.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,13 +92,125 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
+  <section id="functional">
+<span id="module-tohubohu.functional"></span><h1>Functional<a class="headerlink" href="#functional" title="Link to this heading"></a></h1>
+<p>Collection of factories for functional iteration
+Output of nest and fold function factories can be composed with regular JAX functions</p>
+</section>
+<dl class="py function">
+<dt class="sig sig-object py" id="tohubohu.functional.fold">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.functional.</span></span><span class="sig-name descname"><span class="pre">fold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mappings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tohubohu/functional.html#fold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.functional.fold" title="Link to this definition"></a></dt>
+<dd><p>Create a function that sequentially applies mappings from a given list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mappings</strong> (Sequence[Callable[[Array, <a href="#id1"><span class="problematic" id="id2">*</span></a>Any], Array]]) – ordered sequence of transformation (identical signature) functions
+[R^n x … -&gt; R^n]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Callable[[Array, *Any], Array]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All mappings are assumed to have identical signature  f(x, <a href="#id3"><span class="problematic" id="id4">*</span></a>args) and R^n x … -&gt; R^n
+Fold over a list of mappings is equivalent to the following Python loop:</p>
+<dl class="simple">
+<dt>for f in fs:</dt><dd><p>x = f(x, <a href="#id5"><span class="problematic" id="id6">*</span></a>args)</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tohubohu.functional.fold_list">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.functional.</span></span><span class="sig-name descname"><span class="pre">fold_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mappings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tohubohu/functional.html#fold_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.functional.fold_list" title="Link to this definition"></a></dt>
+<dd><p>Create a function that sequentially applies mappings from a given list
+And accumulates intermediate results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mappings</strong> (Sequence[Callable[[Array, <a href="#id7"><span class="problematic" id="id8">*</span></a>Any], Array]]) – ordered sequence of transformation (identical signature) functions
+[R^n x … -&gt; R^n]</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Callable[[Array, *Any], Array]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All mappings are assumed to have identical signature  f(x, <a href="#id9"><span class="problematic" id="id10">*</span></a>args) and R^n x … -&gt; R^n
+Fold over a list of mappings is equivalent to the following Python loop:</p>
+<p>xs = []
+for f in fs:</p>
+<blockquote>
+<div><p>x = f(x, <a href="#id11"><span class="problematic" id="id12">*</span></a>args)
+xs.append(x)</p>
+</div></blockquote>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tohubohu.functional.nest">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.functional.</span></span><span class="sig-name descname"><span class="pre">nest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tohubohu/functional.html#nest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.functional.nest" title="Link to this definition"></a></dt>
+<dd><p>Create a function that iteratively applies a state transformation mapping</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>positive</em>) – number of iterations to perform</p></li>
+<li><p><strong>mapping</strong> (Callable[[Array, <a href="#id13"><span class="problematic" id="id14">*</span></a>Any], Array]) – state transformation mapping
+R^n x … -&gt; R^n</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Callable[[Array, *Any], Array]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Nest is equivalent to the following Python loop:</p>
+<dl class="simple">
+<dt>for _ in range(n):</dt><dd><p>x = f(x, <a href="#id15"><span class="problematic" id="id16">*</span></a>args)</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tohubohu.functional.nest_list">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.functional.</span></span><span class="sig-name descname"><span class="pre">nest_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tohubohu/functional.html#nest_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.functional.nest_list" title="Link to this definition"></a></dt>
+<dd><p>Create a function that iteratively applies a state transformation mapping
+And accumulates intermediate results</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length</strong> (<em>int</em><em>, </em><em>positive</em>) – number of iterations to perform</p></li>
+<li><p><strong>mapping</strong> (Callable[[Array, <a href="#id17"><span class="problematic" id="id18">*</span></a>Any], Array]) – state transformation mapping
+R^n x … -&gt; R^n</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Callable[[Array, *Any], Array]</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Initial value is not included in the output, output length is equal to the number of iterations
+Accumulate is equivalent to the following Python loop:</p>
+<p>xs = []
+for _ in range(n):</p>
+<blockquote>
+<div><p>x = f(x, <a href="#id19"><span class="problematic" id="id20">*</span></a>args)
+xs.append(x)</p>
+</div></blockquote>
+</div>
+</dd></dl>
+
+
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../examples/example-04.html" class="btn btn-neutral float-left" title="Example-05: Frequency (Jacobian)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rem.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rem.html" class="btn btn-neutral float-right" title="REM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

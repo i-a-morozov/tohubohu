@@ -1,2 +1,2 @@
-.. automodule:: sympint.filter
+.. automodule:: tohubohu.filter
     :members:

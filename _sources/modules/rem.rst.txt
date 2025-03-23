@@ -1,2 +1,2 @@
-.. automodule:: sympint.rem
+.. automodule:: tohubohu.rem
     :members:

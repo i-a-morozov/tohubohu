@@ -1,2 +1,2 @@
-.. automodule:: sympint.frequency
+.. automodule:: tohubohu.frequency
     :members:
