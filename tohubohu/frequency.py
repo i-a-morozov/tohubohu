@@ -2,7 +2,8 @@
 Frequency
 ---------
 
-Frequency estimation factory (weighted average phase advance)
+Frequency estimation factory
+Frequency estimation is based on weighted average phase advance (Birkhoff weighted average)
 
 """
 from typing import Any
