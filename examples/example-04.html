@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example-03: REM (differentiable) &mdash; tohubohu  documentation</title>
+  <title>Example-05: Frequency (Jacobian) &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -23,8 +23,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example-04: Frequency" href="example-03.html" />
-    <link rel="prev" title="Example-01: REM" href="example-01.html" /> 
+    <link rel="next" title="&lt;no title&gt;" href="../modules/functional.html" />
+    <link rel="prev" title="Example-04: Frequency" href="example-03.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,9 +50,9 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example-00.html">Example-01: Functional iteration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-01.html">Example-01: REM</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-03: REM (differentiable)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-02.html">Example-03: REM (differentiable)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-03.html">Example-04: Frequency</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example-04.html">Example-05: Frequency (Jacobian)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-05: Frequency (Jacobian)</a></li>
 </ul>
 
         </div>
@@ -69,9 +69,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Example-03: REM (differentiable)</li>
+      <li class="breadcrumb-item active">Example-05: Frequency (Jacobian)</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/example-02.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/examples/example-04.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -79,13 +79,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Example-03:-REM-(differentiable)">
-<h1>Example-03: REM (differentiable)<a class="headerlink" href="#Example-03:-REM-(differentiable)" title="Link to this heading"></a></h1>
+  <section id="Example-05:-Frequency-(Jacobian)">
+<h1>Example-05: Frequency (Jacobian)<a class="headerlink" href="#Example-05:-Frequency-(Jacobian)" title="Link to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example REM chaos indicator derivative is used for chaos identification</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example frequency derivative is used as choas indicator</span>
+
+<span class="c1"># Frequency estimation based on window weighted average phase advance is a differentiable function</span>
+<span class="c1"># Hence, it is possible to compute derivaties of it with respect to initial conditions or paraters</span>
+
+<span class="c1"># In the case of derivatives with respect to initial condition (frequency vector Jacobin)</span>
+<span class="c1"># One would expect frequency to be continuous if space for regular initials</span>
+<span class="c1"># Normally, the norm of Jacobian is expected to be relatively small for regular initials</span>
+<span class="c1"># For choatic initials this norm is observed to be much large</span>
+<span class="c1"># Thus, Jacobian norm can be used as a chaos indicator</span>
+
+<span class="c1"># Note, in Frequency Map Analysis (FMA) frequency time invariance is used as the idea for chaos detection</span>
+<span class="c1"># Here, space continuity is used in a similar way</span>
 </pre></div>
 </div>
 </div>
@@ -108,11 +120,11 @@
 <span class="c1"># Test symplectic mapping and corresponding inverse</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward4D</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">inverse4D</span>
 
-<span class="c1"># REM factory</span>
+<span class="c1"># Frequency factory</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">rem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">exponential</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">frequency</span>
 
 <span class="c1"># Plotting</span>
 
@@ -171,11 +183,10 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set REM indicator</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set frequency function</span>
 
-<span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0E-16</span> <span class="o">+</span> <span class="n">rem</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">10</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">,</span> <span class="n">inverse4D</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">))</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">exponential</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">frequency</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">))</span>
 
 <span class="n">out</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 </pre></div>
@@ -185,11 +196,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set REM indicator derivative</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set frequency based indicator</span>
 
 <span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">gn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0E-16</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">jacrev</span><span class="p">(</span><span class="n">rem</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">10</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">,</span> <span class="n">inverse4D</span><span class="p">))(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0E-16</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">jacrev</span><span class="p">(</span><span class="n">fn</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)))</span>
 
 <span class="n">out</span> <span class="o">=</span> <span class="n">gn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
 </pre></div>
@@ -197,20 +208,6 @@
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set REM indicator second order derivative</span>
-
-<span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">hn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0E-16</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">jacfwd</span><span class="p">(</span><span class="n">jacrev</span><span class="p">(</span><span class="n">rem</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">10</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">,</span> <span class="n">inverse4D</span><span class="p">)))(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)))</span>
-
-<span class="n">out</span> <span class="o">=</span> <span class="n">hn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set initial grid in (qx, qy) plane</span>
@@ -227,57 +224,10 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># REM</span>
-
-<span class="n">xb</span><span class="p">,</span> <span class="o">*</span><span class="n">xr</span> <span class="o">=</span> <span class="n">xs</span>
-<span class="n">fj</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
-<span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">fj</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span>
-
-<span class="k">for</span> <span class="n">xb</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">xr</span><span class="p">):</span>
-    <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fj</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-
-<span class="c1"># Winsorize data</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">16.0</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-
-<span class="c1"># Plot</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;qx&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;qy&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [00:15&lt;00:00, 64.87it/s]
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/examples_example-02_11_1.png" src="../_images/examples_example-02_11_1.png" />
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># REM (1st order derivative)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate indicator</span>
 
 <span class="n">xb</span><span class="p">,</span> <span class="o">*</span><span class="n">xr</span> <span class="o">=</span> <span class="n">xs</span>
 <span class="n">fj</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">gn</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
@@ -290,7 +240,7 @@
 <span class="c1"># Winsorize data</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">16.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span>
 <span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">16.0</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
@@ -310,61 +260,14 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [03:35&lt;00:00,  4.64it/s]
+100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [16:35&lt;00:00,  1.00it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_example-02_12_1.png" src="../_images/examples_example-02_12_1.png" />
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># REM (2nd order derivative)</span>
-
-<span class="n">xb</span><span class="p">,</span> <span class="o">*</span><span class="n">xr</span> <span class="o">=</span> <span class="n">xs</span>
-<span class="n">fj</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">hn</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
-<span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">fj</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span>
-
-<span class="k">for</span> <span class="n">xb</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">xr</span><span class="p">):</span>
-    <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fj</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-
-<span class="c1"># Winsorize data</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">16.0</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">32.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">32.0</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-
-<span class="c1"># Plot</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">32.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;qx&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;qy&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [15:58&lt;00:00,  1.04it/s]
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/examples_example-02_13_1.png" src="../_images/examples_example-02_13_1.png" />
+<img alt="../_images/examples_example-04_10_1.png" src="../_images/examples_example-04_10_1.png" />
 </div>
 </div>
 </section>
@@ -373,8 +276,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="example-01.html" class="btn btn-neutral float-left" title="Example-01: REM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="example-03.html" class="btn btn-neutral float-right" title="Example-04: Frequency" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="example-03.html" class="btn btn-neutral float-left" title="Example-04: Frequency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules/functional.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
