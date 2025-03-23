@@ -50,6 +50,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils.html">Util</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils.html#tohubohu.util.forward2D"><code class="docutils literal notranslate"><span class="pre">forward2D()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils.html#tohubohu.util.forward4D"><code class="docutils literal notranslate"><span class="pre">forward4D()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils.html#tohubohu.util.inverse2D"><code class="docutils literal notranslate"><span class="pre">inverse2D()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/utils.html#tohubohu.util.inverse4D"><code class="docutils literal notranslate"><span class="pre">inverse4D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/functional.html">Functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/functional.html#tohubohu.functional.fold"><code class="docutils literal notranslate"><span class="pre">fold()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/functional.html#tohubohu.functional.fold_list"><code class="docutils literal notranslate"><span class="pre">fold_list()</span></code></a></li>
@@ -101,7 +106,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
 
 <div class="viewcode-block" id="forward2D">
-<a class="viewcode-back" href="../../modules/util.html#tohubohu.util.forward2D">[docs]</a>
+<a class="viewcode-back" href="../../modules/utils.html#tohubohu.util.forward2D">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">forward2D</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">Array</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sample 2D symplectic mapping (forward)</span>
@@ -121,7 +126,7 @@
 
 
 <div class="viewcode-block" id="inverse2D">
-<a class="viewcode-back" href="../../modules/util.html#tohubohu.util.inverse2D">[docs]</a>
+<a class="viewcode-back" href="../../modules/utils.html#tohubohu.util.inverse2D">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">inverse2D</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">Array</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Sample 2D symplectic mapping (inverse) &quot;&quot;&quot;</span>
     <span class="n">q</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">x</span>
@@ -133,7 +138,7 @@
 
 
 <div class="viewcode-block" id="forward4D">
-<a class="viewcode-back" href="../../modules/util.html#tohubohu.util.forward4D">[docs]</a>
+<a class="viewcode-back" href="../../modules/utils.html#tohubohu.util.forward4D">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">forward4D</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">Array</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sample 4D symplectic mapping (forward)</span>
@@ -160,7 +165,7 @@
 
 
 <div class="viewcode-block" id="inverse4D">
-<a class="viewcode-back" href="../../modules/util.html#tohubohu.util.inverse4D">[docs]</a>
+<a class="viewcode-back" href="../../modules/utils.html#tohubohu.util.inverse4D">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">inverse4D</span><span class="p">(</span><span class="n">x</span><span class="p">:</span><span class="n">Array</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Sample 4D symplectic mapping (inverse) &quot;&quot;&quot;</span>
     <span class="n">qx</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">x</span>
