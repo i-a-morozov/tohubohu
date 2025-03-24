@@ -13,7 +13,8 @@ __all__ = [
     'exponential',
     'cosine',
     'kaiser',
-    'frequency'
+    'frequency',
+    'fma'
 ]
 
 from tohubohu.functional import nest
@@ -28,3 +29,5 @@ from tohubohu.filter import cosine
 from tohubohu.filter import kaiser
 
 from tohubohu.frequency import frequency
+
+from tohubohu.fma import fma
