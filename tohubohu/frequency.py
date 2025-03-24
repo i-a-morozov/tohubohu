@@ -12,7 +12,8 @@ from typing import Callable
 import jax
 from jax import Array
 
-def frequency(weights: Array, mapping:Callable[..., Array]) ->  Callable[..., Array]:
+def frequency(weights: Array,
+              mapping:Callable[..., Array], *, final:bool=False) ->  Callable[..., Array]:
     """
     Frequency estimation factory
 
@@ -22,6 +23,8 @@ def frequency(weights: Array, mapping:Callable[..., Array]) ->  Callable[..., Ar
         weights to apply
     mapping: Callable[[Array, *Any], Array]
         state transformation mapping
+    final: bool, default=False
+        flag to return final state
 
     Returns
     -------
@@ -29,7 +32,7 @@ def frequency(weights: Array, mapping:Callable[..., Array]) ->  Callable[..., Ar
 
     """
     factor = 2.0*jax.numpy.pi
-    def closure(state: Array, *args: Any) -> Array:
+    def closure(state: Array, *args: Any) -> Array | tuple[Array, Array]:
         qs, ps = jax.numpy.reshape(state, (2, -1))
         initial = jax.numpy.arctan2(qs, ps)
         total = jax.numpy.zeros_like(initial)
@@ -42,6 +45,6 @@ def frequency(weights: Array, mapping:Callable[..., Array]) ->  Callable[..., Ar
             delta = (current - initial) % factor
             total = total + weight*delta
             return (state, current, total), None
-        (*_, total), _ = jax.lax.scan(scan_body, (state, initial, total), weights)
-        return total/factor
+        (state, _, total), _ = jax.lax.scan(scan_body, (state, initial, total), weights)
+        return (state, total/factor) if final else total/factor
     return closure
