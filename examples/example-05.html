@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example-05: Frequency (Jacobian) &mdash; tohubohu  documentation</title>
+  <title>Example-06: FMA &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -23,8 +23,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example-06: FMA" href="example-05.html" />
-    <link rel="prev" title="Example-04: Frequency" href="example-03.html" /> 
+    <link rel="next" title="Util" href="../modules/utils.html" />
+    <link rel="prev" title="Example-05: Frequency (Jacobian)" href="example-04.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,8 +52,8 @@
 <li class="toctree-l1"><a class="reference internal" href="example-01.html">Example-01: REM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-02.html">Example-03: REM (differentiable)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-03.html">Example-04: Frequency</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-05: Frequency (Jacobian)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example-05.html">Example-06: FMA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-04.html">Example-05: Frequency (Jacobian)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-06: FMA</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -93,9 +93,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Example-05: Frequency (Jacobian)</li>
+      <li class="breadcrumb-item active">Example-06: FMA</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/example-04.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/examples/example-05.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -103,25 +103,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Example-05:-Frequency-(Jacobian)">
-<h1>Example-05: Frequency (Jacobian)<a class="headerlink" href="#Example-05:-Frequency-(Jacobian)" title="Link to this heading"></a></h1>
+  <section id="Example-06:-FMA">
+<h1>Example-06: FMA<a class="headerlink" href="#Example-06:-FMA" title="Link to this heading"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example frequency derivative is used as choas indicator</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example, a basic application of the Frequency Map Analysis (FMA) indicator is presented</span>
 
-<span class="c1"># Frequency estimation based on window weighted average phase advance is a differentiable function</span>
-<span class="c1"># Hence, it is possible to compute derivaties of it with respect to initial conditions or paraters</span>
+<span class="c1"># FMA is based on the idea of (fundamental) frequency array time invariance</span>
+<span class="c1"># In this method, frequencies are estimated over the first interval and compared with those estimated over the second interval</span>
+<span class="c1"># For regular initial conditions, one would expect results from different intervals to be close</span>
+<span class="c1"># For chaotic initial conditions, where, strictly speaking, the frequency is not well defined, the difference will be more notable</span>
+<span class="c1"># Normally, only two intervals are used for frequency estimation, and the FMA indicator value (sometimes called frequency diffusion) is the log10 of the distance in the frequency space</span>
 
-<span class="c1"># In the case of derivatives with respect to initial condition (frequency vector Jacobin)</span>
-<span class="c1"># One would expect frequency to be continuous if space for regular initials</span>
-<span class="c1"># Normally, the norm of Jacobian is expected to be relatively small for regular initials</span>
-<span class="c1"># For choatic initials this norm is observed to be much large</span>
-<span class="c1"># Thus, Jacobian norm can be used as a chaos indicator</span>
+<span class="c1"># FMA is known to be sensitive to both chaotic and strongly nonlinear motion</span>
+<span class="c1"># Strongly nonlinear motion can still be differentiated from chaotic motion, but this requires more intervals for frequency estimation</span>
+<span class="c1"># In the case of regular but strongly nonlinear motion, frequencies obtained over different intervals will oscillate around the true frequencies</span>
 
-<span class="c1"># Note, in Frequency Map Analysis (FMA) frequency time invariance is used as the idea for chaos detection</span>
-<span class="c1"># Here, space continuity is used in a similar way</span>
+<span class="c1"># Another known problem with FMA is incorrect peak frequency identification</span>
+<span class="c1"># For nonlinear motion, the amplitude spectrum contains a potentially large number of harmonics</span>
+<span class="c1"># These harmonics may have similar amplitudes, and frequency estimation procedures might pick different frequencies on different intervals</span>
+<span class="c1"># This artifact is commonly observed for small horizontal amplitudes and large vertical ones in 4D mappings modeling accelerator lattices</span>
+<span class="c1"># There is also no guarantee that the fundamental frequency (rather than a harmonic) will be estimated</span>
+<span class="c1"># To remedy such artifacts, one would need to compute several frequencies at once and perform a type of ordering based on continuity</span>
+<span class="c1"># This, of course, is computationally more expensive</span>
+
+<span class="c1"># Note that the indicator based on the frequency Jacobian does not suffer from the problem of differing frequencies across intervals, as only one interval is used</span>
+<span class="c1"># However, the computed frequencies are not guaranteed to be fundamental ones</span>
 </pre></div>
 </div>
 </div>
@@ -138,8 +147,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">vmap</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jacrev</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jacfwd</span>
 
 <span class="c1"># Test symplectic mapping and corresponding inverse</span>
 
@@ -149,6 +156,10 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">exponential</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">frequency</span>
+
+<span class="c1"># FMA factory</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">fma</span>
 
 <span class="c1"># Plotting</span>
 
@@ -191,47 +202,75 @@
 <span class="n">mux</span><span class="p">,</span> <span class="n">muy</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">nux</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">nuy</span>
 <span class="n">cx</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mux</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mux</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">muy</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">muy</span><span class="p">)</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">cx</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">mu</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">cx</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">mu</span><span class="p">])</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Estimate frequeny on several intervals</span>
+
+<span class="c1"># Set window</span>
+
+<span class="n">ws</span> <span class="o">=</span> <span class="n">exponential</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Set frequency estimator (one interval)</span>
+
+<span class="n">fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">frequency</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">,</span> <span class="n">final</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+<span class="c1"># Estimate on a given number of intervals</span>
+<span class="c1"># Note, this uses a Python loop, this can be also implemented with jax.lax.scan (as it is in fma factory)</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">4</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="n">fs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">fs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span>
+
+<span class="c1"># Set FMA</span>
+
+<span class="n">fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">fma</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">))</span>
+
+<span class="c1"># Estimate and compare frequencies</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">4</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">fs</span> <span class="o">-</span> <span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set frequency function</span>
-
-<span class="n">ws</span> <span class="o">=</span> <span class="n">exponential</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">frequency</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">))</span>
-
-<span class="n">out</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set frequency based indicator</span>
-
-<span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">gn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0E-16</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">jacrev</span><span class="p">(</span><span class="n">fn</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)))</span>
-
-<span class="n">out</span> <span class="o">=</span> <span class="n">gn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set initial grid in (qx, qy) plane</span>
@@ -243,35 +282,45 @@
 <span class="n">qs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">qx</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ps</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="mf">1.0E-12</span><span class="p">)</span>
 <span class="n">xs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">qs</span><span class="p">,</span> <span class="n">ps</span><span class="p">])</span>
-<span class="n">xs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set indicator</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">1</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">fma</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">ws</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">))</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gn</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0E-16</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">gn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate indicator</span>
 
-<span class="n">xb</span><span class="p">,</span> <span class="o">*</span><span class="n">xr</span> <span class="o">=</span> <span class="n">xs</span>
-<span class="n">fj</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">gn</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
-<span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">fj</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span>
-
-<span class="k">for</span> <span class="n">xb</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">xr</span><span class="p">):</span>
-    <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fj</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">gn</span><span class="p">)(</span><span class="n">xs</span><span class="p">)</span>
 
 <span class="c1"># Winsorize data</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">16.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">12.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">12.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
 <span class="c1"># Plot</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=-</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;qx&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;qy&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -279,19 +328,11 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [16:35&lt;00:00,  1.00it/s]
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_example-04_10_1.png" src="../_images/examples_example-04_10_1.png" />
+<img alt="../_images/examples_example-05_9_0.png" src="../_images/examples_example-05_9_0.png" />
 </div>
 </div>
 </section>
@@ -300,8 +341,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="example-03.html" class="btn btn-neutral float-left" title="Example-04: Frequency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="example-05.html" class="btn btn-neutral float-right" title="Example-06: FMA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="example-04.html" class="btn btn-neutral float-left" title="Example-05: Frequency (Jacobian)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules/utils.html" class="btn btn-neutral float-right" title="Util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
