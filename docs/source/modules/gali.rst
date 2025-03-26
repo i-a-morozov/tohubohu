@@ -1,0 +1,2 @@
+.. automodule:: tohubohu.gali
+    :members:

@@ -32,7 +32,7 @@ def frequency(weights: Array,
 
     Returns
     -------
-    Callable[[Array, *Any], Array | tuple[Array, Array]]
+    Callable[[Array, *Any], Array] | Callable[[Array, *Any], tuple[Array, Array]]
 
     """
     factor = 2.0*jax.numpy.pi
