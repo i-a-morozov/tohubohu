@@ -12,7 +12,6 @@ import jax
 from jax import Array
 
 from jax import jacrev
-from jax import vmap
 
 from jax.numpy.linalg import norm
 from jax.numpy.linalg import svdvals
@@ -45,7 +44,7 @@ def gali(n:int,
         return x, x
     def tangent(x:Array, vs:Array, *args:Any) -> tuple[Array, Array]:
         m, x = jacrev(wrapper, has_aux=True)(x, *args)
-        vs = vmap(lambda v: m @ v)(vs)
+        vs = jax.numpy.stack([m @ v for v in vs])
         return (x, vs/norm(vs, axis=-1, keepdims=True)) if normalize else (x, vs)
     def indicator(vs:Array) -> Array:
         return svdvals(vs).prod()
