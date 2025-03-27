@@ -305,6 +305,14 @@
     "plt.tight_layout()\n",
     "plt.show()"
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "df0105d0-85e8-4013-8929-6003d63dee27",
+   "metadata": {},
+   "outputs": [],
+   "source": []
   }
  ],
  "metadata": {

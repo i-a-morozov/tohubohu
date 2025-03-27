@@ -268,7 +268,7 @@
 <span class="c1"># Winsorize data</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">16.0</span>
 <span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">16.0</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
@@ -288,7 +288,7 @@
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [16:35&lt;00:00,  1.00it/s]
+100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [15:52&lt;00:00,  1.05it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -296,6 +296,22 @@
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/examples_example-04_10_1.png" src="../_images/examples_example-04_10_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
 </div>
 </div>
 </section>
