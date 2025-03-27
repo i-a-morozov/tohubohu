@@ -48,7 +48,7 @@ def gali(n:int,
         vs = vmap(lambda v: m @ v)(vs)
         return (x, vs/norm(vs, axis=-1, keepdims=True)) if normalize else (x, vs)
     def indicator(vs:Array) -> Array:
-        return svdvals(jax.numpy.nan_to_num(vs)).prod()
+        return svdvals(vs).prod()
     if not minimum:
         def closure(x:Array, vs:Array, *args:Any) -> Array:
             def scan_body(carry: tuple[Array, Array], _: Any) -> tuple[tuple[Array, Array], None]:
