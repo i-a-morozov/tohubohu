@@ -56,6 +56,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Example-06: FMA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-06.html">Example-07: FMA (differentiable)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-07.html">Example-08: GALI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-08.html">Example-09: GALI (differentiable)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -64,8 +65,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../modules/utils.html#tohubohu.util.forward4D"><code class="docutils literal notranslate"><span class="pre">forward4D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/utils.html#tohubohu.util.inverse2D"><code class="docutils literal notranslate"><span class="pre">inverse2D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/utils.html#tohubohu.util.inverse4D"><code class="docutils literal notranslate"><span class="pre">inverse4D()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/utils.html#tohubohu.util.revtokamap"><code class="docutils literal notranslate"><span class="pre">revtokamap()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/utils.html#tohubohu.util.tokamap"><code class="docutils literal notranslate"><span class="pre">tokamap()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/functional.html">Functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/functional.html#tohubohu.functional.fold"><code class="docutils literal notranslate"><span class="pre">fold()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/functional.html#tohubohu.functional.fold_list"><code class="docutils literal notranslate"><span class="pre">fold_list()</span></code></a></li>
@@ -193,7 +192,7 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set device</span>
 
-<span class="n">device</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+<span class="n">device</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">(</span><span class="s1">&#39;gpu&#39;</span><span class="p">)</span>
 <span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;jax_default_device&#39;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -339,6 +338,14 @@
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/examples_example-05_9_0.png" src="../_images/examples_example-05_9_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
 </div>
 </div>
 </section>

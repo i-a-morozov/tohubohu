@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Functional" href="functional.html" />
-    <link rel="prev" title="Example-08: GALI" href="../examples/example-07.html" /> 
+    <link rel="prev" title="Example-09: GALI (differentiable)" href="../examples/example-08.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-05.html">Example-06: FMA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-06.html">Example-07: FMA (differentiable)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-07.html">Example-08: GALI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-08.html">Example-09: GALI (differentiable)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
@@ -61,8 +62,6 @@
 <li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.forward4D"><code class="docutils literal notranslate"><span class="pre">forward4D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.inverse2D"><code class="docutils literal notranslate"><span class="pre">inverse2D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.inverse4D"><code class="docutils literal notranslate"><span class="pre">inverse4D()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.revtokamap"><code class="docutils literal notranslate"><span class="pre">revtokamap()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.tokamap"><code class="docutils literal notranslate"><span class="pre">tokamap()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html#tohubohu.functional.fold"><code class="docutils literal notranslate"><span class="pre">fold()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html#tohubohu.functional.fold_list"><code class="docutils literal notranslate"><span class="pre">fold_list()</span></code></a></li>
@@ -150,30 +149,12 @@ Henon mapping (McMillan form)</p>
 Accelerator mapping (4D Henon)</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.revtokamap">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">revtokamap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#revtokamap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.revtokamap" title="Link to this definition"></a></dt>
-<dd><p>Revtokamap</p>
-<p>K = 0.5 (2.0)
-q0 = 3.0
-q1 = 6.0
-qm = 1.5</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.tokamap">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">tokamap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#tokamap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.tokamap" title="Link to this definition"></a></dt>
-<dd><p>Tokamap</p>
-<p>K = 1.0 (3.5)
-q0 = 1.0</p>
-</dd></dl>
-
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../examples/example-07.html" class="btn btn-neutral float-left" title="Example-08: GALI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/example-08.html" class="btn btn-neutral float-left" title="Example-09: GALI (differentiable)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="functional.html" class="btn btn-neutral float-right" title="Functional" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
