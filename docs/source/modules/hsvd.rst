@@ -1,0 +1,2 @@
+.. automodule:: tohubohu.hsvd
+    :members:

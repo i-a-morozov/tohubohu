@@ -1,0 +1,2 @@
+.. automodule:: tohubohu.embedding
+    :members:
