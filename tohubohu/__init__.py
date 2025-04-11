@@ -15,7 +15,8 @@ __all__ = [
     'kaiser',
     'frequency',
     'fma',
-    'gali'
+    'gali',
+    'hsvd'
 ]
 
 from tohubohu.functional import nest
@@ -34,3 +35,5 @@ from tohubohu.frequency import frequency
 from tohubohu.fma import fma
 
 from tohubohu.gali import gali
+
+from tohubohu.hsvd import hsvd
