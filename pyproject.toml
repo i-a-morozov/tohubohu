@@ -47,7 +47,8 @@ disable=[
     "invalid-name",
     "too-many-locals",
     "redefined-outer-name",
-    "not-callable"
+    "not-callable",
+    "too-many-arguments"
 ]
 
 [tool.pytest.ini_options]

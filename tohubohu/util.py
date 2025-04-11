@@ -7,7 +7,6 @@ Utils module (test symplectic mappings)
 """
 import jax
 from jax import Array
-from jax.numpy import pi
 
 def forward2D(x:Array, k:Array) -> Array:
     """
@@ -77,4 +76,3 @@ def inverse4D(x:Array, k:Array) -> Array:
     Px = cx*px + sx*qx - Qx**2 + Qy**2 - mu*(Qx**3 - 3*Qx*Qy**2)
     Py = cy*py + sy*qy + 2*Qx*Qy - mu*(-3*Qx**2*Qy + Qy**3)
     return jax.numpy.stack([Qx, Qy, Px, Py])
-
