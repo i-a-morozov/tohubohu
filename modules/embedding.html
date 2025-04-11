@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REM &mdash; tohubohu  documentation</title>
+  <title>Embedding &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Filter" href="filter.html" />
-    <link rel="prev" title="Functional" href="functional.html" /> 
+    <link rel="next" title="H-SVD" href="hsvd.html" />
+    <link rel="prev" title="GALI" href="gali.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -67,8 +67,8 @@
 <li class="toctree-l1"><a class="reference internal" href="functional.html#tohubohu.functional.fold_list"><code class="docutils literal notranslate"><span class="pre">fold_list()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html#tohubohu.functional.nest"><code class="docutils literal notranslate"><span class="pre">nest()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html#tohubohu.functional.nest_list"><code class="docutils literal notranslate"><span class="pre">nest_list()</span></code></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">REM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.rem.rem"><code class="docutils literal notranslate"><span class="pre">rem()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="rem.html">REM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rem.html#tohubohu.rem.rem"><code class="docutils literal notranslate"><span class="pre">rem()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="filter.html">Filter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.cosine"><code class="docutils literal notranslate"><span class="pre">cosine()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.exponential"><code class="docutils literal notranslate"><span class="pre">exponential()</span></code></a></li>
@@ -79,9 +79,9 @@
 <li class="toctree-l1"><a class="reference internal" href="fma.html#tohubohu.fma.fma"><code class="docutils literal notranslate"><span class="pre">fma()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="gali.html">GALI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gali.html#tohubohu.gali.gali"><code class="docutils literal notranslate"><span class="pre">gali()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding.html">Embedding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding.html#tohubohu.embedding.construct"><code class="docutils literal notranslate"><span class="pre">construct()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding.html#tohubohu.embedding.reconstruct"><code class="docutils literal notranslate"><span class="pre">reconstruct()</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.embedding.construct"><code class="docutils literal notranslate"><span class="pre">construct()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.embedding.reconstruct"><code class="docutils literal notranslate"><span class="pre">reconstruct()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hsvd.html">H-SVD</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hsvd.html#tohubohu.hsvd.hsvd"><code class="docutils literal notranslate"><span class="pre">hsvd()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hsvd.html#tohubohu.hsvd.svd_entropy"><code class="docutils literal notranslate"><span class="pre">svd_entropy()</span></code></a></li>
@@ -101,9 +101,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">REM</li>
+      <li class="breadcrumb-item active">Embedding</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/modules/rem.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/modules/embedding.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -111,25 +111,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="rem">
-<span id="module-tohubohu.rem"></span><h1>REM<a class="headerlink" href="#rem" title="Link to this heading"></a></h1>
-<p>Reverse error method indicator factory</p>
+  <section id="embedding">
+<span id="module-tohubohu.embedding"></span><h1>Embedding<a class="headerlink" href="#embedding" title="Link to this heading"></a></h1>
+<p>Construct high dimensional time-delayed embedding (Hankel matrix)</p>
 </section>
 <dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.rem.rem">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.rem.</span></span><span class="sig-name descname"><span class="pre">rem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-16</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">jax.Array</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/tohubohu/rem.html#rem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.rem.rem" title="Link to this definition"></a></dt>
-<dd><p>Reverse error method (REM) factory</p>
+<dt class="sig sig-object py" id="tohubohu.embedding.construct">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.embedding.</span></span><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/embedding.html#construct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.embedding.construct" title="Link to this definition"></a></dt>
+<dd><p>Construct high dimensional time delayed embedding (Hankel matrix representation)</p>
+<p>sequence = [x[0], x[1], x[2], x[3], …, x[n-1]]</p>
+<dl class="simple">
+<dt>matrix = [</dt><dd><p>[x[0], x[1], …, x[length - 1]],
+[x[1], x[2], …, x[length - 1 + 1]],
+[x[2], x[3], …, x[length - 1 + 1 + 1]],
+…</p>
+</dd>
+</dl>
+<p>]</p>
+<p>matrix.shape = (dimension, length)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<em>int</em>) – number of iterations to perform</p></li>
-<li><p><strong>forward</strong> (Callable[[Array, <a href="#id1"><span class="problematic" id="id2">*</span></a>Any], Array]) – forward state transformation mapping</p></li>
-<li><p><strong>inverse</strong> (Callable[[Array, <a href="#id3"><span class="problematic" id="id4">*</span></a>Any], Array]) – inverse state transformation mapping</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>default=1.0E-16</em>) – perturbation epsilon</p></li>
+<li><p><strong>sequence</strong> (<em>Array</em>) – input sequence</p></li>
+<li><p><strong>length</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – subsequence length</p></li>
+<li><p><strong>dimension</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – number of subsequences</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Callable[[Array, *Any], Array]</p>
+<dd class="field-even"><p>Array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tohubohu.embedding.reconstruct">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.embedding.</span></span><span class="sig-name descname"><span class="pre">reconstruct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/embedding.html#reconstruct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.embedding.reconstruct" title="Link to this definition"></a></dt>
+<dd><p>Reconstruct sequence from embedding matrix representation (average over skew diagonals)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matrix</strong> (<em>Array</em>) – input embedding matrix</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -139,8 +162,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="functional.html" class="btn btn-neutral float-left" title="Functional" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="filter.html" class="btn btn-neutral float-right" title="Filter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gali.html" class="btn btn-neutral float-left" title="GALI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hsvd.html" class="btn btn-neutral float-right" title="H-SVD" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

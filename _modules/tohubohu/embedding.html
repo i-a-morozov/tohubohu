@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tohubohu.filter &mdash; tohubohu  documentation</title>
+  <title>tohubohu.embedding &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -99,7 +99,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">tohubohu.filter</li>
+      <li class="breadcrumb-item active">tohubohu.embedding</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -108,88 +108,93 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for tohubohu.filter</h1><div class="highlight"><pre>
+  <h1>Source code for tohubohu.embedding</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Filter</span>
-<span class="sd">------</span>
+<span class="sd">Embedding</span>
+<span class="sd">---------</span>
 
-<span class="sd">Collection of analytical filters (window functions)</span>
+<span class="sd">Construct high dimensional time-delayed embedding (Hankel matrix)</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
 
-<div class="viewcode-block" id="exponential">
-<a class="viewcode-back" href="../../modules/filter.html#tohubohu.filter.exponential">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">exponential</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">degree</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<div class="viewcode-block" id="construct">
+<a class="viewcode-back" href="../../modules/embedding.html#tohubohu.embedding.construct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">construct</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span><span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+              <span class="n">length</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">dimension</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate exponential filter</span>
+<span class="sd">    Construct high dimensional time delayed embedding (Hankel matrix representation)</span>
+
+<span class="sd">    sequence = [x[0], x[1], x[2], x[3], ..., x[n-1]]</span>
+
+<span class="sd">    matrix = [</span>
+<span class="sd">        [x[0], x[1], ..., x[length - 1]],</span>
+<span class="sd">        [x[1], x[2], ..., x[length - 1 + 1]],</span>
+<span class="sd">        [x[2], x[3], ..., x[length - 1 + 1 + 1]],</span>
+<span class="sd">        ...</span>
+<span class="sd">    ]</span>
+
+<span class="sd">    matrix.shape = (dimension, length)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    length: int</span>
-<span class="sd">        filter length</span>
-<span class="sd">    degree: float, default=1.0</span>
-<span class="sd">        filter degree</span>
+<span class="sd">    sequence: Array</span>
+<span class="sd">        input sequence</span>
+<span class="sd">    length: Optional[int]</span>
+<span class="sd">        subsequence length</span>
+<span class="sd">    dimension: Optional[int]</span>
+<span class="sd">        number of subsequences</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Array</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">/</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="n">degree</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="n">degree</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">w</span><span class="o">/</span><span class="n">w</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">length</span> <span class="k">if</span> <span class="n">length</span> <span class="k">else</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">dimension</span> <span class="o">=</span> <span class="n">dimension</span> <span class="k">if</span> <span class="n">dimension</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scan_body</span><span class="p">(</span><span class="n">_</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="n">Array</span><span class="p">]:</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">dynamic_slice</span><span class="p">(</span>
+            <span class="n">sequence</span><span class="p">,</span>
+            <span class="n">start_indices</span><span class="o">=</span><span class="p">(</span><span class="n">idx</span><span class="p">,),</span>
+            <span class="n">slice_sizes</span><span class="o">=</span><span class="p">(</span><span class="n">length</span><span class="p">,)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="n">window</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">matrix</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
+        <span class="n">scan_body</span><span class="p">,</span>
+        <span class="n">init</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">xs</span><span class="o">=</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dimension</span><span class="p">),</span>
+        <span class="n">length</span><span class="o">=</span><span class="n">dimension</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">matrix</span></div>
 
 
 
-<div class="viewcode-block" id="cosine">
-<a class="viewcode-back" href="../../modules/filter.html#tohubohu.filter.cosine">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">cosine</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">degree</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<div class="viewcode-block" id="reconstruct">
+<a class="viewcode-back" href="../../modules/embedding.html#tohubohu.embedding.reconstruct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reconstruct</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span><span class="n">Array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate cosine filter</span>
+<span class="sd">    Reconstruct sequence from embedding matrix representation (average over skew diagonals)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    length: int</span>
-<span class="sd">        filter length</span>
-<span class="sd">    degree: float, default=1.0</span>
-<span class="sd">        filter degree</span>
+<span class="sd">    matrix: Array</span>
+<span class="sd">        input embedding matrix</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Array</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">/</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="n">numerator</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">**</span><span class="n">degree</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaln</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">degree</span><span class="p">))</span>
-    <span class="n">denominator</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaln</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">degree</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span><span class="o">*</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">))</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">**</span><span class="n">degree</span></div>
-
-
-
-<div class="viewcode-block" id="kaiser">
-<a class="viewcode-back" href="../../modules/filter.html#tohubohu.filter.kaiser">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">kaiser</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">degree</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate Kaiser filter</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    length: int</span>
-<span class="sd">        filter length</span>
-<span class="sd">    degree: float, default=3.0</span>
-<span class="sd">        filter degree</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Array</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">/</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="n">beta</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">degree</span>
-    <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">i0</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">factor</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">i0</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">4.0</span><span class="o">*</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">length</span><span class="p">,</span> <span class="n">dimension</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">length</span><span class="p">,</span> <span class="n">dimension</span><span class="p">):</span>
+        <span class="n">sequence</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span></div>
 
 </pre></div>
 

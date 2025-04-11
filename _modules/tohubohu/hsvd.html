@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>tohubohu.filter &mdash; tohubohu  documentation</title>
+  <title>tohubohu.hsvd &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -99,7 +99,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">tohubohu.filter</li>
+      <li class="breadcrumb-item active">tohubohu.hsvd</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -108,88 +108,104 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for tohubohu.filter</h1><div class="highlight"><pre>
+  <h1>Source code for tohubohu.hsvd</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Filter</span>
-<span class="sd">------</span>
+<span class="sd">H-SVD</span>
+<span class="sd">-----</span>
 
-<span class="sd">Collection of analytical filters (window functions)</span>
+<span class="sd">H-SVD indicator factory</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
 
-<div class="viewcode-block" id="exponential">
-<a class="viewcode-back" href="../../modules/filter.html#tohubohu.filter.exponential">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">exponential</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">degree</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.functional</span><span class="w"> </span><span class="kn">import</span> <span class="n">nest_list</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.embedding</span><span class="w"> </span><span class="kn">import</span> <span class="n">construct</span>
+
+<div class="viewcode-block" id="svd_entropy">
+<a class="viewcode-back" href="../../modules/hsvd.html#tohubohu.hsvd.svd_entropy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">svd_entropy</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span><span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                <span class="n">length</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">dimension</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">normalize</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">background</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0E-16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate exponential filter</span>
+<span class="sd">    Compute SVD entropy of a given sequence</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    length: int</span>
-<span class="sd">        filter length</span>
-<span class="sd">    degree: float, default=1.0</span>
-<span class="sd">        filter degree</span>
+<span class="sd">    sequence: Array</span>
+<span class="sd">        input sequence</span>
+<span class="sd">    length: Optional[int]</span>
+<span class="sd">        subsequence length</span>
+<span class="sd">    dimension: Optional[int]</span>
+<span class="sd">        number of subsequences</span>
+<span class="sd">    normalize: bool, default=True</span>
+<span class="sd">        normalization flag</span>
+<span class="sd">    background: float, default=1.0E-16</span>
+<span class="sd">        singular values background (constant added to all singular values)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Array</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">/</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="n">degree</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="n">degree</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">w</span><span class="o">/</span><span class="n">w</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">construct</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">order</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">background</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">/=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">entropy</span> <span class="o">=</span> <span class="o">-</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">values</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">values</span><span class="p">))</span><span class="o">/</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">entropy</span><span class="o">/</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="k">if</span> <span class="n">normalize</span> <span class="k">else</span> <span class="n">entropy</span></div>
 
 
 
-<div class="viewcode-block" id="cosine">
-<a class="viewcode-back" href="../../modules/filter.html#tohubohu.filter.cosine">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">cosine</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">degree</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+<div class="viewcode-block" id="hsvd">
+<a class="viewcode-back" href="../../modules/hsvd.html#tohubohu.hsvd.hsvd">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hsvd</span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span>
+         <span class="n">mapping</span><span class="p">:</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">],</span>
+         <span class="n">observable</span><span class="p">:</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">],</span>
+         <span class="n">length</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">dimension</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+         <span class="n">normalize</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+         <span class="n">background</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0E-16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate cosine filter</span>
+<span class="sd">    H-SVD indicator factory</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    length: int</span>
-<span class="sd">        filter length</span>
-<span class="sd">    degree: float, default=1.0</span>
-<span class="sd">        filter degree</span>
+<span class="sd">    n: int</span>
+<span class="sd">        number of iterations to perform</span>
+<span class="sd">    mapping: Callable[[Array, *Any], Array]</span>
+<span class="sd">        state transformation mapping</span>
+<span class="sd">    observable: Callable[[Array, *Any], Array]</span>
+<span class="sd">        function to apply</span>
+<span class="sd">    length: Optional[int]</span>
+<span class="sd">        subsequence length</span>
+<span class="sd">    dimension: Optional[int]</span>
+<span class="sd">        number of subsequences</span>
+<span class="sd">    normalize: bool, default=True</span>
+<span class="sd">        normalization flag</span>
+<span class="sd">    background: float, default=1.0E-16</span>
+<span class="sd">        singular values background (constant added to all singular values)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Array</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">/</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="n">numerator</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">**</span><span class="n">degree</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaln</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">degree</span><span class="p">))</span>
-    <span class="n">denominator</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">gammaln</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">degree</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span><span class="o">*</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">))</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">**</span><span class="n">degree</span></div>
-
-
-
-<div class="viewcode-block" id="kaiser">
-<a class="viewcode-back" href="../../modules/filter.html#tohubohu.filter.kaiser">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">kaiser</span><span class="p">(</span><span class="n">length</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span> <span class="n">degree</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate Kaiser filter</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    length: int</span>
-<span class="sd">        filter length</span>
-<span class="sd">    degree: float, default=3.0</span>
-<span class="sd">        filter degree</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Array</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">length</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">/</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
-    <span class="n">beta</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">degree</span>
-    <span class="n">factor</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">i0</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">factor</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">special</span><span class="o">.</span><span class="n">i0</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">4.0</span><span class="o">*</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
+    <span class="k">def</span><span class="w"> </span><span class="nf">closure</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
+        <span class="n">orbit</span> <span class="o">=</span> <span class="n">nest_list</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">sequence</span> <span class="o">=</span> <span class="n">observable</span><span class="p">(</span><span class="n">orbit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">svd_entropy</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span>
+                           <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
+                           <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">,</span>
+                           <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>
+                           <span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">closure</span></div>
 
 </pre></div>
 

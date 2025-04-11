@@ -76,6 +76,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../modules/fma.html#tohubohu.fma.fma"><code class="docutils literal notranslate"><span class="pre">fma()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/gali.html">GALI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules/gali.html#tohubohu.gali.gali"><code class="docutils literal notranslate"><span class="pre">gali()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/embedding.html">Embedding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/embedding.html#tohubohu.embedding.construct"><code class="docutils literal notranslate"><span class="pre">construct()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/embedding.html#tohubohu.embedding.reconstruct"><code class="docutils literal notranslate"><span class="pre">reconstruct()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/hsvd.html">H-SVD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/hsvd.html#tohubohu.hsvd.hsvd"><code class="docutils literal notranslate"><span class="pre">hsvd()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules/hsvd.html#tohubohu.hsvd.svd_entropy"><code class="docutils literal notranslate"><span class="pre">svd_entropy()</span></code></a></li>
 </ul>
 
         </div>
@@ -112,7 +118,6 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
 
 <div class="viewcode-block" id="forward2D">
 <a class="viewcode-back" href="../../modules/utils.html#tohubohu.util.forward2D">[docs]</a>
@@ -193,7 +198,6 @@
     <span class="n">Px</span> <span class="o">=</span> <span class="n">cx</span><span class="o">*</span><span class="n">px</span> <span class="o">+</span> <span class="n">sx</span><span class="o">*</span><span class="n">qx</span> <span class="o">-</span> <span class="n">Qx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">Qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">mu</span><span class="o">*</span><span class="p">(</span><span class="n">Qx</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">Qx</span><span class="o">*</span><span class="n">Qy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">Py</span> <span class="o">=</span> <span class="n">cy</span><span class="o">*</span><span class="n">py</span> <span class="o">+</span> <span class="n">sy</span><span class="o">*</span><span class="n">qy</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">Qx</span><span class="o">*</span><span class="n">Qy</span> <span class="o">-</span> <span class="n">mu</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">Qx</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">Qy</span> <span class="o">+</span> <span class="n">Qy</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">Qx</span><span class="p">,</span> <span class="n">Qy</span><span class="p">,</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Py</span><span class="p">])</span></div>
-
 
 </pre></div>
 
