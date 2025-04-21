@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Example-05: Frequency (Jacobian) &mdash; tohubohu  documentation</title>
+  <title>Example-10: Hankel SVD entropy &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -23,8 +23,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Example-06: FMA" href="example-05.html" />
-    <link rel="prev" title="Example-04: Frequency" href="example-03.html" /> 
+    <link rel="next" title="Util" href="../modules/utils.html" />
+    <link rel="prev" title="Example-09: GALI (differentiable)" href="example-08.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,12 +52,12 @@
 <li class="toctree-l1"><a class="reference internal" href="example-01.html">Example-02: REM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-02.html">Example-03: REM (differentiable)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-03.html">Example-04: Frequency</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-05: Frequency (Jacobian)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-04.html">Example-05: Frequency (Jacobian)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-05.html">Example-06: FMA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-06.html">Example-07: FMA (differentiable)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-07.html">Example-08: GALI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example-08.html">Example-09: GALI (differentiable)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example-09.html">Example-10: Hankel SVD entropy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-10: Hankel SVD entropy</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul>
@@ -105,9 +105,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Example-05: Frequency (Jacobian)</li>
+      <li class="breadcrumb-item active">Example-10: Hankel SVD entropy</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/example-04.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/examples/example-09.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -115,65 +115,52 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="Example-05:-Frequency-(Jacobian)">
-<h1>Example-05: Frequency (Jacobian)<a class="headerlink" href="#Example-05:-Frequency-(Jacobian)" title="Link to this heading"></a></h1>
+  <section id="Example-10:-Hankel-SVD-entropy">
+<h1>Example-10: Hankel SVD entropy<a class="headerlink" href="#Example-10:-Hankel-SVD-entropy" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example, an illustration of the Hankel SVD entropy indicator is presented</span>
+<span class="c1"># This method starts by creating a high-dimensional time embedding for a given time series</span>
+<span class="c1"># Thus, the time series is represented by a (Hankel) matrix</span>
+<span class="c1"># Takens&#39;s theorem assures that for a large enough matrix, geometric structures can be reconstructed from this matrix</span>
+<span class="c1"># The entropy of the singular value spectrum is then computed and used as a measure of chaos</span>
+
+<span class="c1"># The SVD spectrum can be related to quasi-periodic decomposition</span>
+<span class="c1"># where regular initial conditions are characterized by fast-decaying amplitudes</span>
+<span class="c1"># Given a regular initial condition, the corresponding spectrum is expected to decay exponentially fast for quasi-periodic trajectories</span>
+<span class="c1"># For initial conditions close to resonances, the spectrum decay will be slower.</span>
+<span class="c1"># The spectrum decay is polynomially slow for chaotic initial conditions</span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># In this example frequency derivative is used as choas indicator</span>
-
-<span class="c1"># Frequency estimation based on window weighted average phase advance is a differentiable function</span>
-<span class="c1"># Hence, it is possible to compute derivaties of it with respect to initial conditions or paraters</span>
-
-<span class="c1"># In the case of derivatives with respect to initial condition (frequency vector Jacobin)</span>
-<span class="c1"># One would expect frequency to be continuous if space for regular initials</span>
-<span class="c1"># Normally, the norm of Jacobian is expected to be relatively small for regular initials</span>
-<span class="c1"># For choatic initials this norm is observed to be much large</span>
-<span class="c1"># Thus, Jacobian norm can be used as a chaos indicator</span>
-
-<span class="c1"># Note, in Frequency Map Analysis (FMA) frequency time invariance is used as the idea for chaos detection</span>
-<span class="c1"># Here, space continuity is used in a similar way</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">vmap</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jacrev</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jacfwd</span>
-
-<span class="c1"># Test symplectic mapping and corresponding inverse</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward4D</span>
-
-<span class="c1"># Frequency factory</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">exponential</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">frequency</span>
-
-<span class="c1"># Plotting</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">colormaps</span>
 
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">colormaps</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
 <span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward4D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.embedding</span><span class="w"> </span><span class="kn">import</span> <span class="n">construct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">hsvd</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set data type</span>
@@ -183,13 +170,23 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set device</span>
 
-<span class="n">device</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">(</span><span class="s1">&#39;gpu&#39;</span><span class="p">)</span>
+<span class="n">device</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
 <span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;jax_default_device&#39;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">observable</span><span class="p">(</span><span class="n">orbit</span><span class="p">):</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">orbit</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">qx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">px</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">qy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -203,47 +200,73 @@
 <span class="n">mux</span><span class="p">,</span> <span class="n">muy</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">nux</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">nuy</span>
 <span class="n">cx</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">mux</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">mux</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">muy</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">muy</span><span class="p">)</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">cx</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">mu</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">cx</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="n">mu</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The following illustrates the embedding construction</span>
+<span class="c1"># Note, chaos need time to develop</span>
+<span class="c1"># Hence, there should be relativly large number of map iterations</span>
+<span class="c1"># But SVD computations is expensive, thus introduction of time delay is required</span>
+
+<span class="n">delay</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">construct</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">12</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">),</span> <span class="n">delay</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[   0.    8.   16. ... 2032. 2040. 2048.]
+ [   8.   16.   24. ... 2040. 2048. 2056.]
+ [  16.   24.   32. ... 2048. 2056. 2064.]
+ ...
+ [2032. 2040. 2048. ... 4064. 4072. 4080.]
+ [2040. 2048. 2056. ... 4072. 4080. 4088.]
+ [2048. 2056. 2064. ... 4080. 4088. 4095.]]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># Construct indicator</span>
+
 <span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">hsvd</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">,</span> <span class="n">observable</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">8</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="mf">1.0E-12</span><span class="p">))</span>
+<span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 159 ms, sys: 3.02 ms, total: 162 ms
+Wall time: 72 ms
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Array(0.9999999, dtype=float32)
+</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set frequency function</span>
-
-<span class="n">ws</span> <span class="o">=</span> <span class="n">exponential</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
-<span class="n">fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">frequency</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">forward4D</span><span class="p">))</span>
-
-<span class="n">out</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set frequency based indicator</span>
-
-<span class="nd">@jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">gn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">1.0E-16</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">jacrev</span><span class="p">(</span><span class="n">fn</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)))</span>
-
-<span class="n">out</span> <span class="o">=</span> <span class="n">gn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set initial grid in (qx, qy) plane</span>
@@ -260,13 +283,13 @@
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate indicator</span>
 
 <span class="n">xb</span><span class="p">,</span> <span class="o">*</span><span class="n">xr</span> <span class="o">=</span> <span class="n">xs</span>
-<span class="n">fj</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">gn</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+<span class="n">fj</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
 <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">fj</span><span class="p">(</span><span class="n">xb</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span>
 
 <span class="k">for</span> <span class="n">xb</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">xr</span><span class="p">):</span>
@@ -276,14 +299,26 @@
 <span class="c1"># Winsorize data</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">16.0</span>
-<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">16.0</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-
-<span class="c1"># Plot</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [41:51&lt;00:00,  2.51s/it]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;qx&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;qy&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -291,27 +326,11 @@
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-100%|█████████████████████████████████████████████████████████████████████████████████████████| 1000/1000 [01:33&lt;00:00, 10.68it/s]
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_example-04_10_1.png" src="../_images/examples_example-04_10_1.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
+<img alt="../_images/examples_example-09_11_0.png" src="../_images/examples_example-09_11_0.png" />
 </div>
 </div>
 </section>
@@ -320,8 +339,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="example-03.html" class="btn btn-neutral float-left" title="Example-04: Frequency" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="example-05.html" class="btn btn-neutral float-right" title="Example-06: FMA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="example-08.html" class="btn btn-neutral float-left" title="Example-09: GALI (differentiable)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules/utils.html" class="btn btn-neutral float-right" title="Util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
