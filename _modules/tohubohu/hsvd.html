@@ -129,6 +129,7 @@
 <div class="viewcode-block" id="svd_entropy">
 <a class="viewcode-back" href="../../modules/hsvd.html#tohubohu.hsvd.svd_entropy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">svd_entropy</span><span class="p">(</span><span class="n">sequence</span><span class="p">:</span><span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+                <span class="n">delay</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                 <span class="n">length</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">dimension</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">normalize</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -140,6 +141,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    sequence: Array</span>
 <span class="sd">        input sequence</span>
+<span class="sd">    delay: int, default=1</span>
+<span class="sd">        delay</span>
 <span class="sd">    length: Optional[int]</span>
 <span class="sd">        subsequence length</span>
 <span class="sd">    dimension: Optional[int]</span>
@@ -154,7 +157,7 @@
 <span class="sd">    Array</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">matrix</span> <span class="o">=</span> <span class="n">construct</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">construct</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">order</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">values</span> <span class="o">=</span> <span class="n">background</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">values</span> <span class="o">/=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
@@ -167,7 +170,8 @@
 <a class="viewcode-back" href="../../modules/hsvd.html#tohubohu.hsvd.hsvd">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">hsvd</span><span class="p">(</span><span class="n">n</span><span class="p">:</span><span class="nb">int</span><span class="p">,</span>
          <span class="n">mapping</span><span class="p">:</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">],</span>
-         <span class="n">observable</span><span class="p">:</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">],</span>
+         <span class="n">observable</span><span class="p">:</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span>
+         <span class="n">delay</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
          <span class="n">length</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
          <span class="n">dimension</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
          <span class="n">normalize</span><span class="p">:</span><span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -183,6 +187,8 @@
 <span class="sd">        state transformation mapping</span>
 <span class="sd">    observable: Callable[[Array, *Any], Array]</span>
 <span class="sd">        function to apply</span>
+<span class="sd">    delay: int, default=1</span>
+<span class="sd">        delay</span>
 <span class="sd">    length: Optional[int]</span>
 <span class="sd">        subsequence length</span>
 <span class="sd">    dimension: Optional[int]</span>
@@ -201,6 +207,7 @@
         <span class="n">orbit</span> <span class="o">=</span> <span class="n">nest_list</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="n">sequence</span> <span class="o">=</span> <span class="n">observable</span><span class="p">(</span><span class="n">orbit</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">svd_entropy</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span>
+                           <span class="n">delay</span><span class="o">=</span><span class="n">delay</span><span class="p">,</span>
                            <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
                            <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">,</span>
                            <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">,</span>

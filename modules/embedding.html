@@ -117,13 +117,13 @@
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="tohubohu.embedding.construct">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.embedding.</span></span><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/embedding.html#construct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.embedding.construct" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">tohubohu.embedding.</span></span><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/embedding.html#construct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.embedding.construct" title="Link to this definition"></a></dt>
 <dd><p>Construct high dimensional time delayed embedding (Hankel matrix representation)</p>
-<p>sequence = [x[0], x[1], x[2], x[3], …, x[n-1]]</p>
+<p>Given a sequence [x[0], x[1], x[2], x[3], …, x[n-1]] and delay T:</p>
 <dl class="simple">
-<dt>matrix = [</dt><dd><p>[x[0], x[1], …, x[length - 1]],
-[x[1], x[2], …, x[length - 1 + 1]],
-[x[2], x[3], …, x[length - 1 + 1 + 1]],
+<dt>matrix = [</dt><dd><p>[x[0*T], x[1*T] , …],
+[x[1*T], x[2*T], …],
+[x[2*T], x[3*T], …],
 …</p>
 </dd>
 </dl>
@@ -133,6 +133,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sequence</strong> (<em>Array</em>) – input sequence</p></li>
+<li><p><strong>delay</strong> (<em>int</em><em>, </em><em>default=1</em>) – delay</p></li>
 <li><p><strong>length</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – subsequence length</p></li>
 <li><p><strong>dimension</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – number of subsequences</p></li>
 </ul>
