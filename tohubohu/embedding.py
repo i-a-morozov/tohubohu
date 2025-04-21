@@ -11,17 +11,18 @@ import jax
 from jax import Array
 
 def construct(sequence:Array, *,
+              delay:int = 1,
               length:Optional[int]=None,
               dimension:Optional[int]=None) -> Array:
     """
     Construct high dimensional time delayed embedding (Hankel matrix representation)
 
-    sequence = [x[0], x[1], x[2], x[3], ..., x[n-1]]
+    Given a sequence [x[0], x[1], x[2], x[3], ..., x[n-1]] and delay T:
 
     matrix = [
-        [x[0], x[1], ..., x[length - 1]],
-        [x[1], x[2], ..., x[length - 1 + 1]],
-        [x[2], x[3], ..., x[length - 1 + 1 + 1]],
+        [x[0*T], x[1*T] , ...],
+        [x[1*T], x[2*T], ...],
+        [x[2*T], x[3*T], ...],
         ...
     ]
 
@@ -31,6 +32,8 @@ def construct(sequence:Array, *,
     ----------
     sequence: Array
         input sequence
+    delay: int, default=1
+        delay
     length: Optional[int]
         subsequence length
     dimension: Optional[int]
@@ -41,19 +44,17 @@ def construct(sequence:Array, *,
     Array
 
     """
-    length = length if length else 1 + len(sequence) // 2
-    dimension = dimension if dimension else len(sequence) // 2
+    length = length if length else len(sequence) // 2 + 1
+    dimension = dimension if dimension else len(sequence) // 2 + 1 - delay
+    start = delay*jax.numpy.arange(dimension)
     def scan_body(_: None, idx: int) -> tuple[None, Array]:
-        window = jax.lax.dynamic_slice(
-            sequence,
-            start_indices=(idx,),
-            slice_sizes=(length,)
-        )
-        return None, window
+        indices = idx + delay*jax.numpy.arange(length)
+        window = sequence[indices]
+        return None, window        
     _, matrix = jax.lax.scan(
         scan_body,
         init=None,
-        xs=jax.numpy.arange(dimension),
+        xs=start,
         length=dimension
     )
     return matrix

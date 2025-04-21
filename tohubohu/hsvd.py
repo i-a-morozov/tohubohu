@@ -16,6 +16,7 @@ from tohubohu.functional import nest_list
 from tohubohu.embedding import construct
 
 def svd_entropy(sequence:Array, *,
+                delay:int=1,
                 length:Optional[int]=None,
                 dimension:Optional[int]=None,
                 normalize:bool=True,
@@ -27,6 +28,8 @@ def svd_entropy(sequence:Array, *,
     ----------
     sequence: Array
         input sequence
+    delay: int, default=1
+        delay
     length: Optional[int]
         subsequence length
     dimension: Optional[int]
@@ -41,7 +44,7 @@ def svd_entropy(sequence:Array, *,
     Array
 
     """
-    matrix = construct(sequence, length=length, dimension=dimension).T
+    matrix = construct(sequence, delay=delay, length=length, dimension=dimension).T
     _, order = matrix.shape
     values = background + jax.numpy.linalg.svd(matrix, compute_uv=False)
     values /= jax.numpy.sum(values)
@@ -51,7 +54,8 @@ def svd_entropy(sequence:Array, *,
 
 def hsvd(n:int,
          mapping:Callable[..., Array],
-         observable:Callable[..., Array],
+         observable:Callable[..., Array], *,
+         delay:int=1,
          length:Optional[int]=None,
          dimension:Optional[int]=None,
          normalize:bool=True,
@@ -67,6 +71,8 @@ def hsvd(n:int,
         state transformation mapping
     observable: Callable[[Array, *Any], Array]
         function to apply
+    delay: int, default=1
+        delay
     length: Optional[int]
         subsequence length
     dimension: Optional[int]
@@ -85,6 +91,7 @@ def hsvd(n:int,
         orbit = nest_list(n, mapping)(x, *args)
         sequence = observable(orbit)
         return svd_entropy(sequence,
+                           delay=delay,
                            length=length,
                            dimension=dimension,
                            normalize=normalize,
