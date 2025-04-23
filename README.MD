@@ -2,6 +2,8 @@
 
 JAX composable differentiable chaos indicators 
 
+[![DOI](https://zenodo.org/badge/951085879.svg)](https://doi.org/10.5281/zenodo.15265931)
+
 # Install
 
 ```
