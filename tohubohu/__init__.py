@@ -2,7 +2,7 @@
 Version and aliases
 
 """
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 __all__ = [
     'nest',
@@ -16,7 +16,8 @@ __all__ = [
     'frequency',
     'fma',
     'gali',
-    'hsvd'
+    'hsvd',
+    'fli'
 ]
 
 from tohubohu.functional import nest
@@ -37,3 +38,5 @@ from tohubohu.fma import fma
 from tohubohu.gali import gali
 
 from tohubohu.hsvd import hsvd
+
+from tohubohu.fli import fli
