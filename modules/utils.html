@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Functional" href="functional.html" />
-    <link rel="prev" title="Example-10: Hankel SVD entropy" href="../examples/example-09.html" /> 
+    <link rel="prev" title="Example-11: FLI" href="../examples/example-10.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,12 +55,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-07.html">Example-08: GALI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-08.html">Example-09: GALI (differentiable)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-09.html">Example-10: Hankel SVD entropy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-10.html">Example-11: FLI</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Util</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.forward2D"><code class="docutils literal notranslate"><span class="pre">forward2D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.forward4D"><code class="docutils literal notranslate"><span class="pre">forward4D()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.gingerbread_man_forward"><code class="docutils literal notranslate"><span class="pre">gingerbread_man_forward()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.gingerbread_man_inverse"><code class="docutils literal notranslate"><span class="pre">gingerbread_man_inverse()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.inverse2D"><code class="docutils literal notranslate"><span class="pre">inverse2D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.inverse4D"><code class="docutils literal notranslate"><span class="pre">inverse4D()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Functional</a></li>
@@ -86,6 +89,8 @@
 <li class="toctree-l1"><a class="reference internal" href="hsvd.html">H-SVD</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hsvd.html#tohubohu.hsvd.hsvd"><code class="docutils literal notranslate"><span class="pre">hsvd()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="hsvd.html#tohubohu.hsvd.svd_entropy"><code class="docutils literal notranslate"><span class="pre">svd_entropy()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="fli.html">FLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fli.html#tohubohu.fli.fli"><code class="docutils literal notranslate"><span class="pre">fli()</span></code></a></li>
 </ul>
 
         </div>
@@ -143,6 +148,18 @@ Py = cy*(py - 2*qx*qy + mu*(-3*qx**2*qy + qy**3)) - sy*qy</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tohubohu.util.gingerbread_man_forward">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">gingerbread_man_forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#gingerbread_man_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.gingerbread_man_forward" title="Link to this definition"></a></dt>
+<dd><p>Gingerbread man map (forward)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tohubohu.util.gingerbread_man_inverse">
+<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">gingerbread_man_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#gingerbread_man_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.gingerbread_man_inverse" title="Link to this definition"></a></dt>
+<dd><p>Gingerbread man map (inverse)</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tohubohu.util.inverse2D">
 <span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">inverse2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#inverse2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.inverse2D" title="Link to this definition"></a></dt>
 <dd><p>Sample 2D symplectic mapping (inverse)
@@ -161,7 +178,7 @@ Accelerator mapping (4D Henon)</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../examples/example-09.html" class="btn btn-neutral float-left" title="Example-10: Hankel SVD entropy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/example-10.html" class="btn btn-neutral float-left" title="Example-11: FLI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="functional.html" class="btn btn-neutral float-right" title="Functional" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
