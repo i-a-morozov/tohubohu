@@ -76,3 +76,21 @@ def inverse4D(x:Array, k:Array) -> Array:
     Px = cx*px + sx*qx - Qx**2 + Qy**2 - mu*(Qx**3 - 3*Qx*Qy**2)
     Py = cy*py + sy*qy + 2*Qx*Qy - mu*(-3*Qx**2*Qy + Qy**3)
     return jax.numpy.stack([Qx, Qy, Px, Py])
+
+
+def gingerbread_man_forward(x:Array, *args, **kwargs) -> Array:
+    """
+    Gingerbread man map (forward)
+
+    """
+    q, p = x
+    return jax.numpy.stack([p, -q + jax.numpy.abs(p) + 1])
+
+
+def gingerbread_man_inverse(x:Array, *args, **kwargs) -> Array:
+    """
+    Gingerbread man map (inverse)
+
+    """
+    q, p = x
+    return jax.numpy.stack([-p + jax.numpy.abs(q) + 1, q])
