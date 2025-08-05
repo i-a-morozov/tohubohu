@@ -94,3 +94,43 @@ def gingerbread_man_inverse(x:Array, *args, **kwargs) -> Array:
     """
     q, p = x
     return jax.numpy.stack([-p + jax.numpy.abs(q) + 1, q])
+
+
+def bb_map_forward(x:Array, nu:Array, xi:Array, ks:float=0.0, epsilon:float=0.0) -> Array:
+    """
+    Beam-beam map (forward)
+
+    """
+    q, p = x + epsilon
+    cos = jax.numpy.cos(2*jax.numpy.pi*nu)
+    sin = jax.numpy.sin(2*jax.numpy.pi*nu)
+    return jax.numpy.stack([p, -q + 2*cos*p + (8*jax.numpy.pi*xi*sin)/p*(jax.numpy.exp(-p**2/2) - 1) + sin*ks*p**2])
+
+
+def bb_map_inverse(x:Array, nu:Array, xi:Array, ks:float=0.0, epsilon:float=0.0) -> Array:
+    """
+    Beam-beam map (inverse)
+
+    """
+    q, p = x + epsilon
+    cos = jax.numpy.cos(2*jax.numpy.pi*nu)
+    sin = jax.numpy.sin(2*jax.numpy.pi*nu)
+    return jax.numpy.stack([-p + 2*cos*q + (8*jax.numpy.pi*xi*sin)/q*(jax.numpy.exp(-q**2/2) - 1) + sin*ks*q**2, q])
+
+
+def bb_map_symmetry_diagonal(x:Array, nu:Array, xi:Array, ks:float=0.0) -> Array:
+    """
+    Beam-beam map diagonal symmetry line
+
+    """
+    return x
+
+
+def bb_map_symmetry_force(x:Array, nu:Array, xi:Array, ks:float=0.0) -> Array:
+    """
+    Beam-beam map force symmetry line
+
+    """
+    cos = jax.numpy.cos(2*jax.numpy.pi*nu)
+    sin = jax.numpy.sin(2*jax.numpy.pi*nu)
+    return (2*x*cos + (ks*x**2 + (8*(-1 + jax.numpy.exp(-1/2*x**2))*jax.numpy.pi*xi)/x)*sin)/2
