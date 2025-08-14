@@ -2,7 +2,7 @@
 Version and aliases
 
 """
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 __all__ = [
     'nest',
@@ -17,7 +17,11 @@ __all__ = [
     'fma',
     'gali',
     'hsvd',
-    'fli'
+    'fli',
+    'iterate',
+    'prime',
+    'monodromy',
+    'unique'
 ]
 
 from tohubohu.functional import nest
@@ -40,3 +44,8 @@ from tohubohu.gali import gali
 from tohubohu.hsvd import hsvd
 
 from tohubohu.fli import fli
+
+from tohubohu.fp import iterate
+from tohubohu.fp import prime
+from tohubohu.fp import monodromy
+from tohubohu.fp import unique
