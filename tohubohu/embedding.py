@@ -6,6 +6,7 @@ Construct high dimensional time-delayed embedding (Hankel matrix)
 
 """
 from typing import Optional
+from typing import Any
 
 import jax
 from jax import Array
@@ -47,7 +48,7 @@ def construct(sequence:Array, *,
     length = length if length else len(sequence) // 2 + 1
     dimension = dimension if dimension else len(sequence) // 2 + 1 - delay
     start = delay*jax.numpy.arange(dimension)
-    def scan_body(_: None, idx: int) -> tuple[None, Array]:
+    def scan_body(_: Any, idx: Array) -> tuple[Any, Array]:
         indices = idx + delay*jax.numpy.arange(length)
         window = sequence[indices]
         return None, window        
