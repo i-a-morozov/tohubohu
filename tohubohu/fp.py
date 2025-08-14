@@ -142,6 +142,26 @@ def prime(function:Callable[..., Array],
     return closure
 
 
+def chain(order:int,
+          function:Callable[..., Array]) -> Callable[..., Array]:
+    """
+    Chain generator
+
+    Parameters
+    ----------
+    order: int, positive
+        function power / prime period
+    function: Callable[..., Array]
+        input function
+
+    Returns
+    -------
+    Callable[..., Array]
+
+    """
+    return nest_list(order, function)
+
+
 def monodromy(order:int,
               function:Callable[..., Array],
               jacobian:Optional[Callable] = None) -> Callable[..., Array]:

@@ -20,6 +20,7 @@ __all__ = [
     'fli',
     'iterate',
     'prime',
+    'chain',
     'monodromy',
     'unique'
 ]
@@ -47,5 +48,6 @@ from tohubohu.fli import fli
 
 from tohubohu.fp import iterate
 from tohubohu.fp import prime
+from tohubohu.fp import chain
 from tohubohu.fp import monodromy
 from tohubohu.fp import unique
