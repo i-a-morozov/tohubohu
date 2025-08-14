@@ -36,6 +36,8 @@ def rem(n:int,
     Callable[[Array, *Any], Array]
 
     """
+    fn_inverse = nest(n, inverse)
+    fn_forward = nest(n, forward)
     def closure(x: Array, *args: Any) -> Array:
-        return norm(x - nest(n, inverse)(nest(n, forward)(x, *args) + epsilon, *args))
+        return norm(x - fn_inverse(fn_forward(x, *args) + epsilon, *args))
     return closure

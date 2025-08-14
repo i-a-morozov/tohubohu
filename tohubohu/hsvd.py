@@ -87,8 +87,9 @@ def hsvd(n:int,
     Array
 
     """
+    fixed = nest_list(n, mapping)
     def closure(x: Array, *args: Any) -> Array:
-        orbit = nest_list(n, mapping)(x, *args)
+        orbit = fixed(x, *args)
         sequence = observable(orbit)
         return svd_entropy(sequence,
                            delay=delay,
