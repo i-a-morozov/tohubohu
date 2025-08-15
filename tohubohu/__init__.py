@@ -22,7 +22,10 @@ __all__ = [
     'prime',
     'chain',
     'monodromy',
-    'unique'
+    'unique',
+    'combine',
+    'classify',
+    'manifold'
 ]
 
 from tohubohu.functional import nest
@@ -51,3 +54,6 @@ from tohubohu.fp import prime
 from tohubohu.fp import chain
 from tohubohu.fp import monodromy
 from tohubohu.fp import unique
+from tohubohu.fp import combine
+from tohubohu.fp import classify
+from tohubohu.fp import manifold

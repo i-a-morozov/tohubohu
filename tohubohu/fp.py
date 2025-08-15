@@ -222,3 +222,71 @@ def unique(order:int,
     _, ts = jax.lax.scan(scan_body, xs, xs)
     table = jax.numpy.abs(ts.reshape(-1, 1) - ts)
     return jax.numpy.logical_not(jax.numpy.any(jax.numpy.triu(table <= tol, k=1), axis=0))
+
+
+def combine(values:Array,
+            vectors:Array,
+            tol:float=1.0E-9) -> tuple[Array, Array]:
+    """
+    Combine monodromy matrix eigenvalues and eigenvectors
+
+    Parameters
+    ----------
+    values: Array
+        values
+    vectors: Array
+        vectors
+    tol: float, default=1.0E-9
+        tolerance
+
+    Returns
+    -------
+    tuple[Array, Array]
+
+    """
+    matrix = jax.numpy.abs(values.reshape(-1, 1)*values - 1) <= tol
+    argmax = jax.numpy.argmax(matrix, axis=1)
+    groups = jax.numpy.sort(jax.numpy.stack([jax.numpy.sort(argmax), argmax], axis=1), axis=1)
+    groups, indices = jax.numpy.unique(groups, axis=0, return_index=True)
+    groups = groups[jax.numpy.sort(indices)]
+    return values[groups], vectors.T[groups]
+
+
+def classify(pairs:Array,
+             tol:float=1.0E-9) -> Array:
+    """
+    Classify combines monodromy matrix eigenvalues
+
+    Parameters
+    ----------
+    pairs: Array
+        pairs of eigenvalues
+    tol: float, default=1.0E-9
+        tolerance
+
+    Returns
+    -------
+    tuple[Array, Array]
+
+    """
+    return jax.numpy.all(jax.numpy.abs(jax.numpy.abs(pairs) - 1) < tol, axis=-1)
+
+
+def manifold(values:Array,
+             tol:float=1.0E-9) -> Array:
+    """
+    Classify eigenvectors of hyperbolic points
+
+    Parameters
+    ----------
+    values: Array
+        hyperbolic eignevalue pairs
+    tol: float, default=1.0E-9
+        tolerance
+
+    Returns
+    -------
+    Array
+
+    """
+    return values - 1 < tol
