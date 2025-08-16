@@ -21,6 +21,7 @@ JAX composable differentiable chaos indicators
    examples/example-11.ipynb
    examples/example-12.ipynb
    examples/example-13.ipynb
+   examples/example-14.ipynb
 
 .. toctree::
    :caption: API:
