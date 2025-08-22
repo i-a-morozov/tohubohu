@@ -45,3 +45,5 @@ $ pip install git+https://github.com/i-a-morozov/tohubohu.git@main
 [Example-14: Heteroclinic tangle (Henon mapping)](./docs/source/examples/example-13.ipynb)
 
 [Example-15:  Differentiable fixed point](./docs/source/examples/example-14.ipynb)
+
+[Example-16: Henon fractal (parametric fixed points)](./docs/source/examples/example-15.ipynb)
