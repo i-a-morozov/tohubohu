@@ -96,7 +96,7 @@ def gingerbread_man_inverse(x:Array, *args, **kwargs) -> Array:
     return jax.numpy.stack([-p + jax.numpy.abs(q) + 1, q])
 
 
-def bb_map_forward(x:Array, nu:Array, xi:Array, ks:float=0.0, epsilon:float=0.0) -> Array:
+def bb_map_forward(x:Array, nu:Array, xi:Array, ks:float=0.0, epsilon:float=1.0E-18) -> Array:
     """
     Beam-beam map (forward)
 
@@ -107,7 +107,7 @@ def bb_map_forward(x:Array, nu:Array, xi:Array, ks:float=0.0, epsilon:float=0.0)
     return jax.numpy.stack([p, -q + 2*cos*p + (8*jax.numpy.pi*xi*sin)/p*(jax.numpy.exp(-p**2/2) - 1) + sin*ks*p**2])
 
 
-def bb_map_inverse(x:Array, nu:Array, xi:Array, ks:float=0.0, epsilon:float=0.0) -> Array:
+def bb_map_inverse(x:Array, nu:Array, xi:Array, ks:float=0.0, epsilon:float=1.0E-18) -> Array:
     """
     Beam-beam map (inverse)
 

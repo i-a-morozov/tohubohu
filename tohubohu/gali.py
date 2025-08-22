@@ -7,6 +7,7 @@ GALI factory
 """
 from typing import Any
 from typing import Callable
+from typing import Optional
 
 import jax
 from jax import Array
@@ -19,7 +20,8 @@ from jax.numpy.linalg import svdvals
 def gali(n:int,
          mapping:Callable[..., Array], *,
          normalize:bool=True,
-         minimum:bool=False) ->  Callable[..., Array]:
+         minimum:bool=False,
+         jacobian:Optional[Callable[..., Array]] = None) ->  Callable[..., Array]:
     """
     GALI factory
 
@@ -33,6 +35,8 @@ def gali(n:int,
         flag to normalize alignment vectors
     minimum: bool, default=False
         flag to use running minimum
+    jacobian: Optional[Callable]
+        jax.jacfwd or jax.jacrev (default)        
 
     Returns
     -------
@@ -42,8 +46,10 @@ def gali(n:int,
     def wrapper(x:Array, *args: Any) -> tuple[Array, Array]:
         x = mapping(x, *args)
         return x, x
+    jacobian = jax.jacrev if jacobian is None else jacobian
+    auxiliary = jacobian(wrapper, has_aux=True)
     def tangent(x:Array, vs:Array, *args:Any) -> tuple[Array, Array]:
-        m, x = jacrev(wrapper, has_aux=True)(x, *args)
+        m, x = auxiliary(x, *args)
         vs = jax.numpy.stack([m @ v for v in vs])
         return (x, vs/norm(vs, axis=-1, keepdims=True)) if normalize else (x, vs)
     def indicator(vs:Array) -> Array:

@@ -112,8 +112,8 @@ def iterate(limit:int,
 
 def prime(function:Callable[..., Array],
           order:int=1,
-          rtol:float=1.0E-9,
-          atol:float=1.0E-9) -> Callable[..., Array]:
+          rtol:float=1.0E-12,
+          atol:float=1.0E-12) -> Callable[..., Array]:
     """
     Generate prime fixed point test
 
@@ -123,9 +123,9 @@ def prime(function:Callable[..., Array],
         input function
     order: int, positive, default=1
         function power / fixed point order
-    rtol: float, default=1.0E-9
+    rtol: float, default=1.0E-12
         relative tolerance
-    atol: float, default=1.0E-9
+    atol: float, default=1.0E-12
         absolute tolerance
 
     Returns
@@ -187,11 +187,22 @@ def monodromy(order:int,
     return jacobian(nest(order, function))
 
 
+def sort(chain: Array) -> Array:
+    length, dimension = chain.shape
+    idxs = jax.numpy.arange(length)
+    cols = jax.numpy.arange(dimension - 1, -1, -1)
+    def scan_body(idxs: Array, col: Array) -> tuple[Array, None]:
+        indices = jax.numpy.argsort(chain[idxs, col])
+        return idxs[indices], None
+    idxs, _ = jax.lax.scan(scan_body, idxs, cols)
+    return chain[idxs]
+
+
 def unique(order:int,
            function:Callable[..., Array],
            xs:Array,
            *args:Any,
-           tol:float=1.0E-9,
+           tol:float=1.0E-12,
            jacobian:Optional[Callable] = None) -> Array:
     """
     Create unique mask
@@ -206,7 +217,7 @@ def unique(order:int,
         fixed points
     *args: tuple
         additional function arguments
-    tol: float, default=1.0E-9
+    tol: float, default=1.0E-12
         tolerance
     jacobian: Optional[Callable]
         jax.jacfwd or jax.jacrev (default)
@@ -216,17 +227,19 @@ def unique(order:int,
     Array
 
     """
-    matrix = monodromy(order, function, jacobian=jacobian)
-    def scan_body(carry:Array, x:Array) -> tuple[Array, Array]:
-        return carry, jax.numpy.trace(matrix(x, *args))
-    _, ts = jax.lax.scan(scan_body, xs, xs)
-    table = jax.numpy.abs(ts.reshape(-1, 1) - ts)
-    return jax.numpy.logical_not(jax.numpy.any(jax.numpy.triu(table <= tol, k=1), axis=0))
+    auxiliary = chain(order, function)
+    def scan_body(carry:Any, xs:Array) -> tuple[Array, Array]:
+        start, *_ = sort(auxiliary(xs, *args))
+        return carry, start
+    _, starts = jax.lax.scan(scan_body, None, xs)
+    matrix = (starts * starts).sum(-1)
+    matrix = matrix.reshape(-1, 1) + matrix - 2.0*(starts @ starts.T)
+    return jax.numpy.logical_not(jax.numpy.any(jax.numpy.triu(matrix <= tol**2, k=1), axis=0))
 
 
 def combine(values:Array,
             vectors:Array,
-            tol:float=1.0E-9) -> tuple[Array, Array]:
+            tol:float=1.0E-12) -> tuple[Array, Array]:
     """
     Combine monodromy matrix eigenvalues and eigenvectors
 
@@ -236,7 +249,7 @@ def combine(values:Array,
         values
     vectors: Array
         vectors
-    tol: float, default=1.0E-9
+    tol: float, default=1.0E-12
         tolerance
 
     Returns
@@ -253,7 +266,7 @@ def combine(values:Array,
 
 
 def classify(pairs:Array,
-             tol:float=1.0E-9) -> Array:
+             tol:float=1.0E-12) -> Array:
     """
     Classify combines monodromy matrix eigenvalues
 
@@ -261,7 +274,7 @@ def classify(pairs:Array,
     ----------
     pairs: Array
         pairs of eigenvalues
-    tol: float, default=1.0E-9
+    tol: float, default=1.0E-12
         tolerance
 
     Returns
@@ -273,7 +286,7 @@ def classify(pairs:Array,
 
 
 def manifold(values:Array,
-             tol:float=1.0E-9) -> Array:
+             tol:float=1.0E-12) -> Array:
     """
     Classify eigenvectors of hyperbolic points
 
@@ -281,7 +294,7 @@ def manifold(values:Array,
     ----------
     values: Array
         hyperbolic eignevalue pairs
-    tol: float, default=1.0E-9
+    tol: float, default=1.0E-12
         tolerance
 
     Returns
