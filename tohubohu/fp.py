@@ -202,8 +202,7 @@ def unique(order:int,
            function:Callable[..., Array],
            xs:Array,
            *args:Any,
-           tol:float=1.0E-12,
-           jacobian:Optional[Callable] = None) -> Array:
+           tol:float=1.0E-12) -> Array:
     """
     Create unique mask
 
@@ -219,8 +218,6 @@ def unique(order:int,
         additional function arguments
     tol: float, default=1.0E-12
         tolerance
-    jacobian: Optional[Callable]
-        jax.jacfwd or jax.jacrev (default)
 
     Returns
     -------
