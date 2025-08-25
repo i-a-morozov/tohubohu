@@ -15,7 +15,7 @@ from jax import Array
 def frequency(weights: Array,
               mapping:Callable[..., Array], *,
               final:bool=False,
-              orbit:bool=False) ->  Callable[..., Array]:
+              orbit:bool=False) ->  Callable[..., Array | tuple[Array, Array]]:
     """
     Frequency estimation factory
 
@@ -28,11 +28,11 @@ def frequency(weights: Array,
     final: bool, default=False
         flag to return final state
     orbit: bool, default=False
-        flag to return orbit along with frequency
+        flag to return full orbit history along with frequency
 
     Returns
     -------
-    Callable[[Array, *Any], Array] | Callable[[Array, *Any], tuple[Array, Array]]
+    Callable[[Array, *Any], Array | tuple[Array, Array]]
 
     """
     factor = 2.0*jax.numpy.pi
@@ -52,20 +52,20 @@ def frequency(weights: Array,
                 return (state, current, total), None
             (state, _, total), _ = jax.lax.scan(scan_body, (state, initial, total), weights)
             return (state, total/factor) if final else total/factor
-    else:
-        def closure(state: Array, *args: Any) -> tuple[Array, Array]:
+        return closure
+    def closure(state: Array, *args: Any) -> Callable[..., tuple[Array, Array]]:
+        qs, ps = jax.numpy.reshape(state, (2, -1))
+        initial = jax.numpy.arctan2(qs, ps)
+        total = jax.numpy.zeros_like(initial)
+        def scan_body(carry: tuple[Array, Array, Array],
+                      weight: Array) -> tuple[tuple[Array, Array, Array], Array]:
+            state, initial, total = carry
+            state = mapping(state, *args)
             qs, ps = jax.numpy.reshape(state, (2, -1))
-            initial = jax.numpy.arctan2(qs, ps)
-            total = jax.numpy.zeros_like(initial)
-            def scan_body(carry: tuple[Array, Array, Array],
-                            weight: Array) -> tuple[tuple[Array, Array, Array], Array]:
-                state, initial, total = carry
-                state = mapping(state, *args)
-                qs, ps = jax.numpy.reshape(state, (2, -1))
-                current = jax.numpy.arctan2(qs, ps)
-                delta = (current - initial) % factor
-                total = total + weight*delta
-                return (state, current, total), state
-            (*_, total), orbit = jax.lax.scan(scan_body, (state, initial, total), weights)
-            return orbit, total/factor
+            current = jax.numpy.arctan2(qs, ps)
+            delta = (current - initial) % factor
+            total = total + weight*delta
+            return (state, current, total), state
+        (*_, total), orbit = jax.lax.scan(scan_body, (state, initial, total), weights)
+        return orbit, total/factor
     return closure

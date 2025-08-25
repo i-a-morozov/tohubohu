@@ -36,7 +36,7 @@ def gali(n:int,
     minimum: bool, default=False
         flag to use running minimum
     jacobian: Optional[Callable]
-        jax.jacfwd or jax.jacrev (default)        
+        jax.jacfwd or jax.jacrev (default)
 
     Returns
     -------
@@ -46,7 +46,7 @@ def gali(n:int,
     def wrapper(x:Array, *args: Any) -> tuple[Array, Array]:
         x = mapping(x, *args)
         return x, x
-    jacobian = jax.jacrev if jacobian is None else jacobian
+    jacobian = jacrev if jacobian is None else jacobian
     auxiliary = jacobian(wrapper, has_aux=True)
     def tangent(x:Array, vs:Array, *args:Any) -> tuple[Array, Array]:
         m, x = auxiliary(x, *args)

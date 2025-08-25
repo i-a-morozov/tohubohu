@@ -15,9 +15,11 @@ __all__ = [
     'kaiser',
     'frequency',
     'fma',
+    'fma_fb',
     'gali',
     'hsvd',
     'fli',
+    'ld',
     'iterate',
     'prime',
     'chain',
@@ -42,12 +44,15 @@ from tohubohu.filter import kaiser
 from tohubohu.frequency import frequency
 
 from tohubohu.fma import fma
+from tohubohu.fma import fma_fb
 
 from tohubohu.gali import gali
 
 from tohubohu.hsvd import hsvd
 
 from tohubohu.fli import fli
+
+from tohubohu.ld import ld
 
 from tohubohu.fp import iterate
 from tohubohu.fp import prime

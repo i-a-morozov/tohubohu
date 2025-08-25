@@ -17,9 +17,10 @@ from jax import jacrev
 from jax.numpy.linalg import norm
 
 def fli(n:int,
-        mapping:Callable[..., Array], *, 
-        normalize:bool=False, 
-        window:Optional[Array]=None) ->  Callable[..., Array]:
+        mapping:Callable[..., Array], *,
+        normalize:bool=False,
+        window:Optional[Array]=None,
+        jacobian:Optional[Callable[..., Array]] = None) ->  Callable[..., Array]:
     """
     FLI factory
 
@@ -33,6 +34,8 @@ def fli(n:int,
         normalization flag
     window: Optional[Array]
         window
+    jacobian: Optional[Callable]
+        jax.jacfwd or jax.jacrev (default)
 
     Returns
     -------
@@ -43,11 +46,13 @@ def fli(n:int,
     Not differentiable (max over iterations is used for FLI computation)
 
     """
+    jacobian = jacrev if jacobian is None else jacobian
     def wrapper(x:Array, *args: Any) -> tuple[Array, Array]:
         x = mapping(x, *args)
         return x, x
+    auxiliary = jacobian(wrapper, has_aux=True)
     def tangent(x:Array, v:Array, *args:Any) -> tuple[Array, Array]:
-        m, x = jacrev(wrapper, has_aux=True)(x, *args)
+        m, x = auxiliary(x, *args)
         v = m @ v
         return x, v
     if not normalize:
@@ -59,24 +64,24 @@ def fli(n:int,
                 result = jax.numpy.maximum(result, norm(v))
                 return (x, v, result), None
             result = norm(v)
-            (*_, result), _ = jax.lax.scan(scan_body, (x, v, result), None, n)
+            (*_, result), _ = jax.lax.scan(scan_body, (x, v, result), None, length=n)
             return jax.numpy.log(result)
         return closure
     if window is None:
         def closure(x: Array, v: Array, *args: Any) -> Array:
-            def scan_body(carry: tuple[Array, Array], 
+            def scan_body(carry: tuple[Array, Array],
                           _: Any) -> tuple[tuple[Array, Array], Array]:
                 x, v = carry
                 x, v = tangent(x, v, *args)
                 value = norm(v)
                 v = v/value
                 return (x, v), jax.numpy.log(value)
-            _, values = jax.lax.scan(scan_body, (x, v), None, n)
+            _, values = jax.lax.scan(scan_body, (x, v), None, length=n)
             return jax.numpy.mean(values)
         return closure
     total = jax.numpy.sum(window)
     def closure(x: Array, v: Array, *args: Any) -> Array:
-        def scan_body(carry: tuple[Array, Array], 
+        def scan_body(carry: tuple[Array, Array],
                       _: Any) -> tuple[tuple[Array, Array], Array]:
             x, v = carry
             x, v = tangent(x, v, *args)

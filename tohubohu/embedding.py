@@ -51,7 +51,7 @@ def construct(sequence:Array, *,
     def scan_body(_: Any, idx: Array) -> tuple[Any, Array]:
         indices = idx + delay*jax.numpy.arange(length)
         window = sequence[indices]
-        return None, window        
+        return None, window
     _, matrix = jax.lax.scan(
         scan_body,
         init=None,
