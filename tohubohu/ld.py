@@ -10,7 +10,6 @@ from typing import Any
 
 import jax
 from jax import Array
-from jax.numpy import sum
 from jax.numpy.linalg import norm
 
 def ld(weights: Array,
@@ -42,6 +41,7 @@ def ld(weights: Array,
             ld_forward += weight*norm(new_forward - old_forward)
             ld_inverse += weight*norm(new_inverse - old_inverse)
             return (new_forward, new_inverse, ld_forward, ld_inverse), None
-        (*_, ld_forward, ld_inverse), _ = jax.lax.scan(scan_body, (state, state, sum(state), sum(state)), weights)
+        ld_forward = ld_inverse = jax.numpy.zeros_like(state).sum()
+        (*_, ld_forward, ld_inverse), _ = jax.lax.scan(scan_body, (state, state, 0.0, 0.0), weights)
         return ld_forward, ld_inverse
     return closure
