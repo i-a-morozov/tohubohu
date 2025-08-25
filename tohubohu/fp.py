@@ -187,22 +187,50 @@ def monodromy(order:int,
     return jacobian(nest(order, function))
 
 
-def sort(chain: Array) -> Array:
-    length, dimension = chain.shape
+def canonize(chain:Array,
+             tol:float=1.0E-12,
+             reverse:bool=True) -> Array:
+    """
+    Periodic chain canonization (canonical starting point)
+
+    Parameters
+    ----------
+    chain: Array
+        chain
+    tol: float, default=1.0E-12
+        tolerance
+    reverse: bool, default=True
+        reverse
+
+    Returns
+    -------
+    Array
+
+    """    
+
+    length, _ = chain.shape
     idxs = jax.numpy.arange(length)
-    cols = jax.numpy.arange(dimension - 1, -1, -1)
-    def scan_body(idxs: Array, col: Array) -> tuple[Array, None]:
-        indices = jax.numpy.argsort(chain[idxs, col])
-        return idxs[indices], None
-    idxs, _ = jax.lax.scan(scan_body, idxs, cols)
-    return chain[idxs]
+    def scan_body(carry:Array, idx:Array) -> tuple[Array, Array]:
+        return jax.numpy.roll(carry, -1, axis=0), carry
+    _, rotations = jax.lax.scan(scan_body, chain, idxs)
+    if reverse:
+        chain = jax.numpy.flip(chain, axis=0)
+        _, rotations_reversed = jax.lax.scan(scan_body, chain, idxs)
+        rotations = jax.numpy.concatenate([rotations, rotations_reversed], axis=0)
+    size, *_ = rotations.shape
+    flat = rotations.reshape(size, -1)
+    keys = jax.numpy.round(flat/tol).astype(jax.numpy.int64)
+    idx, *_ = jax.numpy.lexsort(keys.T[::-1])
+    start, *_ = rotations[idx]
+    return start
 
 
 def unique(order:int,
            function:Callable[..., Array],
            xs:Array,
            *args:Any,
-           tol:float=1.0E-12) -> Array:
+           tol:float=1.0E-12,
+           reverse:bool=True) -> Array:
     """
     Create unique mask
 
@@ -218,6 +246,8 @@ def unique(order:int,
         additional function arguments
     tol: float, default=1.0E-12
         tolerance
+    reverse: bool, default=True
+        include reverse rotations flag
 
     Returns
     -------
@@ -225,8 +255,8 @@ def unique(order:int,
 
     """
     auxiliary = chain(order, function)
-    def scan_body(carry:Any, xs:Array) -> tuple[Array, Array]:
-        start, *_ = sort(auxiliary(xs, *args))
+    def scan_body(carry:Any, x:Array) -> tuple[Array, Array]:
+        start = canonize(auxiliary(x, *args), tol=tol, reverse=reverse)
         return carry, start
     _, starts = jax.lax.scan(scan_body, None, xs)
     matrix = (starts * starts).sum(-1)
