@@ -51,3 +51,5 @@ $ pip install git+https://github.com/i-a-morozov/tohubohu.git@main
 [Example-17: FMA-FB](./docs/source/examples/example-16.ipynb)
 
 [Example-18: LD](./docs/source/examples/example-17.ipynb)
+
+[Example-19: Phase space structure exploration by chaos indicators](./docs/source/examples/example-18.ipynb)
