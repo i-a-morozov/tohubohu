@@ -12,7 +12,7 @@ from typing import Callable
 import jax
 from jax import Array
 
-def frequency(weights: Array,
+def frequency(weights:Array,
               mapping:Callable[..., Array], *,
               final:bool=False,
               orbit:bool=False) ->  Callable[..., Array | tuple[Array, Array]]:
@@ -42,7 +42,7 @@ def frequency(weights: Array,
             initial = jax.numpy.arctan2(qs, ps)
             total = jax.numpy.zeros_like(initial)
             def scan_body(carry:tuple[Array, Array, Array],
-                            weight: Array) -> tuple[tuple[Array, Array, Array], None]:
+                          weight: Array) -> tuple[tuple[Array, Array, Array], None]:
                 state, initial, total = carry
                 state = mapping(state, *args)
                 qs, ps = jax.numpy.reshape(state, (2, -1))
