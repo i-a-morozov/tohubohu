@@ -53,3 +53,7 @@ $ pip install git+https://github.com/i-a-morozov/tohubohu.git@main
 [Example-18: LD](./docs/source/examples/example-17.ipynb)
 
 [Example-19: Phase space structure exploration by chaos indicators](./docs/source/examples/example-18.ipynb)
+
+[Example-20: Mode locking](./docs/source/examples/example-19.ipynb)
+
+[Example-21: Periodic fixed points (4D accelerator mapping)](./docs/source/examples/example-20.ipynb)
