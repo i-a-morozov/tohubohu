@@ -1,0 +1,534 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example-19: Phase space structure exploration by chaos indicators &mdash; tohubohu  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example-20: Mode locking" href="example-19.html" />
+    <link rel="prev" title="Example-18: LD" href="example-17.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            tohubohu
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="example-00.html">Example-01: Functional iteration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-01.html">Example-02: REM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-02.html">Example-03: REM (differentiable)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-03.html">Example-04: Frequency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-04.html">Example-05: Frequency (Jacobian)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-05.html">Example-06: FMA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-06.html">Example-07: FMA (differentiable)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-07.html">Example-08: GALI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-08.html">Example-09: GALI (differentiable)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-09.html">Example-10: Hankel SVD entropy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-10.html">Example-11: FLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-11.html">Example-12: Gingerbreadman map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-12.html">Example-13: Periodic fixed points (Henon mapping)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-13.html">Example-14: Heteroclinic tangle (Henon mapping)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-14.html">Example-15: Differentiable fixed point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-15.html">Example-16: Henon fractal (parametric fixed points)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-16.html">Example-17: FMA-FB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-17.html">Example-18: LD</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example-19: Phase space structure exploration by chaos indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-19.html">Example-20: Mode locking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-20.html">Example-21: Periodic fixed points (4D accelerator mapping)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/functional.html">Functional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/functional.html#tohubohu.functional.fold"><code class="docutils literal notranslate"><span class="pre">fold()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/functional.html#tohubohu.functional.fold_list"><code class="docutils literal notranslate"><span class="pre">fold_list()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/functional.html#tohubohu.functional.nest"><code class="docutils literal notranslate"><span class="pre">nest()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/functional.html#tohubohu.functional.nest_list"><code class="docutils literal notranslate"><span class="pre">nest_list()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/rem.html">REM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/rem.html#tohubohu.rem.rem"><code class="docutils literal notranslate"><span class="pre">rem()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/filter.html">Filter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/filter.html#tohubohu.filter.cosine"><code class="docutils literal notranslate"><span class="pre">cosine()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/filter.html#tohubohu.filter.exponential"><code class="docutils literal notranslate"><span class="pre">exponential()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/filter.html#tohubohu.filter.kaiser"><code class="docutils literal notranslate"><span class="pre">kaiser()</span></code></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tohubohu</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example-19: Phase space structure exploration by chaos indicators</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/example-18.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example-19:-Phase-space-structure-exploration-by-chaos-indicators">
+<h1>Example-19: Phase space structure exploration by chaos indicators<a class="headerlink" href="#Example-19:-Phase-space-structure-exploration-by-chaos-indicators" title="Link to this heading"></a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">vmap</span>
+
+<span class="c1"># Test symplectic mapping and corresponding inverse</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">forward2D</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">inverse2D</span>
+
+<span class="c1"># Indicators</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">rem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">exponential</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">frequency</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tohubohu</span><span class="w"> </span><span class="kn">import</span> <span class="n">ld</span>
+
+<span class="c1"># Plotting</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">colormaps</span>
+
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">colormaps</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="n">cmap</span><span class="o">.</span><span class="n">set_bad</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightgray&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set data type</span>
+
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set device</span>
+
+<span class="n">device</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;jax_default_device&#39;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set initial grid</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1001</span>
+
+<span class="n">qs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">xs</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1002001, 2)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set indicators</span>
+<span class="c1"># Note, jacfwd is make mapping over initial grid memory efficient</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">10</span>
+
+<span class="n">level</span> <span class="o">=</span> <span class="mf">1.0E-16</span>
+<span class="n">knobs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.47</span><span class="p">,</span> <span class="mf">0.00</span><span class="p">])</span>
+
+<span class="n">fn_rem</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">rem</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">forward2D</span><span class="p">,</span> <span class="n">inverse2D</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0E-16</span><span class="p">))</span>
+<span class="n">fn_fr</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">frequency</span><span class="p">(</span><span class="n">exponential</span><span class="p">(</span><span class="n">length</span><span class="p">),</span> <span class="n">forward2D</span><span class="p">))</span>
+<span class="n">fn_ld</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">ld</span><span class="p">(</span><span class="n">exponential</span><span class="p">(</span><span class="n">length</span><span class="p">),</span> <span class="n">forward2D</span><span class="p">,</span> <span class="n">inverse2D</span><span class="p">))</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">indicator_rem</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="n">fn_rem</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">knobs</span><span class="p">))</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">indicator_fr</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jacfwd</span><span class="p">(</span><span class="n">fn_fr</span><span class="p">)(</span><span class="n">x</span><span class="p">,</span> <span class="n">knobs</span><span class="p">)))</span>
+
+<span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">indicator_ld</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">fn_ld</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">knobs</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># Evaluate indicator (REM)</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">indicator_rem</span><span class="p">))(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+<span class="c1"># Winsorize data</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">15.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">15.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Plot</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=-</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_example-18_6_0.png" src="../_images/examples_example-18_6_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 46.5 s, sys: 744 ms, total: 47.2 s
+Wall time: 9.01 s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># Evaluate indicator (LD)</span>
+
+<span class="n">out_a</span><span class="p">,</span> <span class="n">out_b</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">indicator_ld</span><span class="p">))(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">out_a</span> <span class="o">+</span> <span class="n">out_b</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_example-18_7_0.png" src="../_images/examples_example-18_7_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 1min 3s, sys: 805 ms, total: 1min 3s
+Wall time: 13.2 s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># Evaluate indicator (frequency)</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">indicator_fr</span><span class="p">))(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+<span class="c1"># Winsorize data</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">9.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">16.0</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Plot</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">9.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_example-18_8_0.png" src="../_images/examples_example-18_8_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 2min 16s, sys: 1.68 s, total: 2min 18s
+Wall time: 23.7 s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set initial grid (zoom)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1001</span>
+
+<span class="n">qs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">ps</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="n">ps</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">xs</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1002001, 2)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># Evaluate indicator (REM)</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">indicator_rem</span><span class="p">))(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+<span class="c1"># Winsorize data</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">15.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">15.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Plot</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">15.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=-</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_example-18_10_0.png" src="../_images/examples_example-18_10_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 45.7 s, sys: 696 ms, total: 46.4 s
+Wall time: 8.8 s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># Evaluate indicator (LD)</span>
+
+<span class="n">out_a</span><span class="p">,</span> <span class="n">out_b</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">indicator_ld</span><span class="p">))(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">((</span><span class="n">out_a</span> <span class="o">+</span> <span class="n">out_b</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_example-18_11_0.png" src="../_images/examples_example-18_11_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 58.2 s, sys: 747 ms, total: 58.9 s
+Wall time: 12.1 s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1"># Evaluate indicator (frequency)</span>
+
+<span class="n">out</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">indicator_fr</span><span class="p">))(</span><span class="n">xs</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+<span class="c1"># Winsorize data</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">9.0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9.0</span>
+<span class="n">data</span><span class="p">[</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mf">16.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">16.0</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Plot</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">9.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_example-18_12_0.png" src="../_images/examples_example-18_12_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+CPU times: user 2min 23s, sys: 1.66 s, total: 2min 25s
+Wall time: 25.2 s
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="example-17.html" class="btn btn-neutral float-left" title="Example-18: LD" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="example-19.html" class="btn btn-neutral float-right" title="Example-20: Mode locking" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ivan Morozov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

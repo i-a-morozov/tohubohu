@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Util &mdash; tohubohu  documentation</title>
+  <title>&lt;no title&gt; &mdash; tohubohu  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Functional" href="functional.html" />
-    <link rel="prev" title="Example-12: Gingerbreadman map" href="../examples/example-11.html" /> 
+    <link rel="prev" title="Example-21: Periodic fixed points (4D accelerator mapping)" href="../examples/example-20.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,16 +57,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-09.html">Example-10: Hankel SVD entropy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-10.html">Example-11: FLI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/example-11.html">Example-12: Gingerbreadman map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-12.html">Example-13: Periodic fixed points (Henon mapping)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-13.html">Example-14: Heteroclinic tangle (Henon mapping)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-14.html">Example-15: Differentiable fixed point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-15.html">Example-16: Henon fractal (parametric fixed points)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-16.html">Example-17: FMA-FB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-17.html">Example-18: LD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-18.html">Example-19: Phase space structure exploration by chaos indicators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-19.html">Example-20: Mode locking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/example-20.html">Example-21: Periodic fixed points (4D accelerator mapping)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Util</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.forward2D"><code class="docutils literal notranslate"><span class="pre">forward2D()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.forward4D"><code class="docutils literal notranslate"><span class="pre">forward4D()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.gingerbread_man_forward"><code class="docutils literal notranslate"><span class="pre">gingerbread_man_forward()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.gingerbread_man_inverse"><code class="docutils literal notranslate"><span class="pre">gingerbread_man_inverse()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.inverse2D"><code class="docutils literal notranslate"><span class="pre">inverse2D()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#tohubohu.util.inverse4D"><code class="docutils literal notranslate"><span class="pre">inverse4D()</span></code></a></li>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="functional.html">Functional</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html#tohubohu.functional.fold"><code class="docutils literal notranslate"><span class="pre">fold()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="functional.html#tohubohu.functional.fold_list"><code class="docutils literal notranslate"><span class="pre">fold_list()</span></code></a></li>
@@ -78,20 +80,6 @@
 <li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.cosine"><code class="docutils literal notranslate"><span class="pre">cosine()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.exponential"><code class="docutils literal notranslate"><span class="pre">exponential()</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="filter.html#tohubohu.filter.kaiser"><code class="docutils literal notranslate"><span class="pre">kaiser()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="frequency.html">Frequency</a></li>
-<li class="toctree-l1"><a class="reference internal" href="frequency.html#tohubohu.frequency.frequency"><code class="docutils literal notranslate"><span class="pre">frequency()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="fma.html">FMA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fma.html#tohubohu.fma.fma"><code class="docutils literal notranslate"><span class="pre">fma()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="gali.html">GALI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gali.html#tohubohu.gali.gali"><code class="docutils literal notranslate"><span class="pre">gali()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding.html">Embedding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding.html#tohubohu.embedding.construct"><code class="docutils literal notranslate"><span class="pre">construct()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="embedding.html#tohubohu.embedding.reconstruct"><code class="docutils literal notranslate"><span class="pre">reconstruct()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hsvd.html">H-SVD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hsvd.html#tohubohu.hsvd.hsvd"><code class="docutils literal notranslate"><span class="pre">hsvd()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="hsvd.html#tohubohu.hsvd.svd_entropy"><code class="docutils literal notranslate"><span class="pre">svd_entropy()</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="fli.html">FLI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fli.html#tohubohu.fli.fli"><code class="docutils literal notranslate"><span class="pre">fli()</span></code></a></li>
 </ul>
 
         </div>
@@ -108,7 +96,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Util</li>
+      <li class="breadcrumb-item active">&lt;no title&gt;</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/modules/utils.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -118,68 +106,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="util">
-<span id="module-tohubohu.util"></span><h1>Util<a class="headerlink" href="#util" title="Link to this heading"></a></h1>
-<p>Utils module (test symplectic mappings)</p>
-</section>
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.forward2D">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">forward2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#forward2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.forward2D" title="Link to this definition"></a></dt>
-<dd><p>Sample 2D symplectic mapping (forward)
-Henon mapping (McMillan form)</p>
-<p>q, p = x
-a, b = k
-Q = p
-P = -q + a*p + (1 - b)*p**2 + b*p**3</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.forward4D">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">forward4D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#forward4D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.forward4D" title="Link to this definition"></a></dt>
-<dd><p>Sample 4D symplectic mapping (forward)
-Accelerator mapping (4D Henon)</p>
-<p>mux, muy = 2*pi*nux, 2*pi*nuy
-cx, sx, cy, sy = cos(mux), sin(mux), cos(muy), sin(muy)
-qx, qy, px, py = x
-cx, sx, cy, sy, mu = k
-Qx = cx*qx + sx*(px + qx**2 - qy**2 + mu*(qx**3 - 3*qx*qy**2))
-Qy = cy*qy + sy*(py - 2*qx*qy + mu*(-3*qx**2*qy + qy**3))
-Px = cx*(px + qx**2 - qy**2 + mu*(qx**3 - 3*qx*qy**2)) - sx*qx
-Py = cy*(py - 2*qx*qy + mu*(-3*qx**2*qy + qy**3)) - sy*qy</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.gingerbread_man_forward">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">gingerbread_man_forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#gingerbread_man_forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.gingerbread_man_forward" title="Link to this definition"></a></dt>
-<dd><p>Gingerbread man map (forward)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.gingerbread_man_inverse">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">gingerbread_man_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#gingerbread_man_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.gingerbread_man_inverse" title="Link to this definition"></a></dt>
-<dd><p>Gingerbread man map (inverse)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.inverse2D">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">inverse2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#inverse2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.inverse2D" title="Link to this definition"></a></dt>
-<dd><p>Sample 2D symplectic mapping (inverse)
-Henon mapping (McMillan form)</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="tohubohu.util.inverse4D">
-<span class="sig-prename descclassname"><span class="pre">tohubohu.util.</span></span><span class="sig-name descname"><span class="pre">inverse4D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">jax.Array</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">jax.Array</span></span></span><a class="reference internal" href="../_modules/tohubohu/util.html#inverse4D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tohubohu.util.inverse4D" title="Link to this definition"></a></dt>
-<dd><p>Sample 4D symplectic mapping (inverse)
-Accelerator mapping (4D Henon)</p>
-</dd></dl>
-
-
+  
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../examples/example-11.html" class="btn btn-neutral float-left" title="Example-12: Gingerbreadman map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/example-20.html" class="btn btn-neutral float-left" title="Example-21: Periodic fixed points (4D accelerator mapping)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="functional.html" class="btn btn-neutral float-right" title="Functional" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
