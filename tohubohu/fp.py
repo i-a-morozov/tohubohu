@@ -188,7 +188,7 @@ def monodromy(order:int,
 
 
 def canonize(chain:Array,
-             tol:float=1.0E-12,
+             tolerance:float=1.0E-12,
              reverse:bool=True) -> Array:
     """
     Periodic chain canonization (canonical starting point)
@@ -219,7 +219,7 @@ def canonize(chain:Array,
         rotations = jax.numpy.concatenate([rotations, rotations_reversed], axis=0)
     size, *_ = rotations.shape
     flat = rotations.reshape(size, -1)
-    keys = jax.numpy.round(flat/tol).astype(jax.numpy.int64)
+    keys = jax.numpy.round(flat/tolerance).astype(jax.numpy.int64)
     idx, *_ = jax.numpy.lexsort(keys.T[::-1])
     start, *_ = rotations[idx]
     return start
@@ -229,7 +229,7 @@ def unique(order:int,
            function:Callable[..., Array],
            xs:Array,
            *args:Any,
-           tol:float=1.0E-12,
+           tolerance:float=1.0E-12,
            reverse:bool=True) -> Array:
     """
     Create unique mask
@@ -244,7 +244,7 @@ def unique(order:int,
         fixed points
     *args: tuple
         additional function arguments
-    tol: float, default=1.0E-12
+    tolerance: float, default=1.0E-6
         tolerance
     reverse: bool, default=True
         include reverse rotations flag
@@ -256,17 +256,17 @@ def unique(order:int,
     """
     auxiliary = chain(order, function)
     def scan_body(carry:Any, x:Array) -> tuple[Array, Array]:
-        start = canonize(auxiliary(x, *args), tol=tol, reverse=reverse)
+        start = canonize(auxiliary(x, *args), tolerance=tolerance, reverse=reverse)
         return carry, start
     _, starts = jax.lax.scan(scan_body, None, xs)
     matrix = (starts * starts).sum(-1)
     matrix = matrix.reshape(-1, 1) + matrix - 2.0*(starts @ starts.T)
-    return jax.numpy.logical_not(jax.numpy.any(jax.numpy.triu(matrix <= tol**2, k=1), axis=0))
+    return jax.numpy.logical_not(jax.numpy.any(jax.numpy.triu(matrix <= tolerance**2, k=1), axis=0))
 
 
 def combine(values:Array,
             vectors:Array,
-            tol:float=1.0E-12) -> tuple[Array, Array]:
+            tolerance:float=1.0E-12) -> tuple[Array, Array]:
     """
     Combine monodromy matrix eigenvalues and eigenvectors
 
@@ -276,7 +276,7 @@ def combine(values:Array,
         values
     vectors: Array
         vectors
-    tol: float, default=1.0E-12
+    tolerance: float, default=1.0E-12
         tolerance
 
     Returns
@@ -284,7 +284,7 @@ def combine(values:Array,
     tuple[Array, Array]
 
     """
-    matrix = jax.numpy.abs(values.reshape(-1, 1)*values - 1) <= tol
+    matrix = jax.numpy.abs(values.reshape(-1, 1)*values - 1) <= tolerance
     argmax = jax.numpy.argmax(matrix, axis=1)
     groups = jax.numpy.sort(jax.numpy.stack([jax.numpy.sort(argmax), argmax], axis=1), axis=1)
     groups, indices = jax.numpy.unique(groups, axis=0, return_index=True)
@@ -293,15 +293,15 @@ def combine(values:Array,
 
 
 def classify(pairs:Array,
-             tol:float=1.0E-12) -> Array:
+             tolerance:float=1.0E-12) -> Array:
     """
-    Classify combines monodromy matrix eigenvalues
+    Classify combined monodromy matrix eigenvalues
 
     Parameters
     ----------
     pairs: Array
         pairs of eigenvalues
-    tol: float, default=1.0E-12
+    tolerance: float, default=1.0E-12
         tolerance
 
     Returns
@@ -309,11 +309,11 @@ def classify(pairs:Array,
     tuple[Array, Array]
 
     """
-    return jax.numpy.all(jax.numpy.abs(jax.numpy.abs(pairs) - 1) < tol, axis=-1)
+    return jax.numpy.all(jax.numpy.abs(jax.numpy.abs(pairs) - 1) < tolerance, axis=-1)
 
 
 def manifold(values:Array,
-             tol:float=1.0E-12) -> Array:
+             tolerance:float=1.0E-12) -> Array:
     """
     Classify eigenvectors of hyperbolic points
 
@@ -321,7 +321,7 @@ def manifold(values:Array,
     ----------
     values: Array
         hyperbolic eignevalue pairs
-    tol: float, default=1.0E-12
+    tolerance: float, default=1.0E-12
         tolerance
 
     Returns
@@ -329,4 +329,4 @@ def manifold(values:Array,
     Array
 
     """
-    return values - 1 < tol
+    return jax.numpy.abs(values) - 1 < tolerance

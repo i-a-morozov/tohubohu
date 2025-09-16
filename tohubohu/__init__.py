@@ -27,7 +27,13 @@ __all__ = [
     'unique',
     'combine',
     'classify',
-    'manifold'
+    'manifold',
+    'basis',
+    'sample_manifold',
+    'advance',
+    'downsample',
+    'perturbation',
+    'construct'
 ]
 
 from tohubohu.functional import nest
@@ -62,3 +68,10 @@ from tohubohu.fp import unique
 from tohubohu.fp import combine
 from tohubohu.fp import classify
 from tohubohu.fp import manifold
+
+from tohubohu.manifold import basis
+from tohubohu.manifold import sample_manifold
+from tohubohu.manifold import advance
+from tohubohu.manifold import downsample
+from tohubohu.manifold import perturbation
+from tohubohu.manifold import construct
