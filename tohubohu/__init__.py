@@ -29,8 +29,7 @@ __all__ = [
     'classify',
     'manifold',
     'basis',
-    'sample_manifold',
-    'advance',
+    'sample',
     'downsample',
     'perturbation',
     'construct'
@@ -70,8 +69,7 @@ from tohubohu.fp import classify
 from tohubohu.fp import manifold
 
 from tohubohu.manifold import basis
-from tohubohu.manifold import sample_manifold
-from tohubohu.manifold import advance
+from tohubohu.manifold import sample
 from tohubohu.manifold import downsample
 from tohubohu.manifold import perturbation
 from tohubohu.manifold import construct
