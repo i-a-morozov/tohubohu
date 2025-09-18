@@ -1,12 +1,10 @@
-from typing import Tuple
-from typing import List
-from typing import Callable
 from typing import Optional
 from typing import Literal
+from typing import Callable
+from typing import List
 
 import jax
 from jax import Array
-
 
 from tohubohu.fp import chain
 from tohubohu.fp import monodromy
@@ -118,12 +116,12 @@ def sample_ball(key:Array,
     return point[None, :] + (scale * (points @ basis.T))
 
 
-def sample_manifold(key:Array,
-                    point:Array,
-                    basis:Array,
-                    scale:float=1.0E-3,
-                    nline:int=2**8,
-                    nball:int=2**8) -> Array:
+def sample(key:Array,
+           point:Array,
+           basis:Array,
+           scale:float=1.0E-3,
+           nline:int=2**8,
+           nball:int=2**8) -> Array:
     """
     Sample initials in a hyperbolic manifold subspace
 
@@ -155,37 +153,6 @@ def sample_manifold(key:Array,
     if size == 1:
         return sample_line(key, point, basis, scale, nline)
     return sample_ball(key, point, basis, scale, nball)
-
-
-def advance(generator:Callable[..., Array],
-            samples:Array,
-            *parameters:Array,
-            limit:Optional[float]=None) -> Tuple[Array, Array]:
-    """
-    Advance a batch of initial points and flag escaping initials
-
-    Parameters
-    ----------
-    generator: Callable[..., Array]
-        trajectories generator
-    samples: Array
-        samples
-    *parameters: Array
-        extra mapping parameters
-    limit: Optional[float]
-        flag to mark as escaped initials outside of given radius (last iteration)
-
-    Returns
-    -------
-    Tuple[Array, Array]
-
-    """
-    data = generator(samples, *parameters)
-    *_, last = data.swapaxes(0, 1)
-    mask = jax.numpy.isnan(jax.numpy.sum(last, axis=1))
-    if limit:
-        mask = mask | (jax.numpy.linalg.norm(last, axis=1) > limit)
-    return data, mask
 
 
 def downsample(key: Array,
@@ -264,34 +231,68 @@ def perturbation(key:Array,
     basis = jax.numpy.eye(dimension)
     keys = jax.random.split(key, length)
     samples = jax.vmap(sample_ball, in_axes=(0, 0, None, None, None))(keys, cloud, basis, radius, count)
-    return samples.reshape(-1, dimension)    
+    return samples.reshape(-1, dimension)
 
 
-def construct(
-    key:Array,
-    orders:List[int],
-    points:Array,
-    forward:Callable[..., Array],
-    inverse:Callable[..., Array],
-    *parameters,
-    jacobian:Optional[Callable] = None,
-    generate:bool=True,
-    scale:float=1.0E-3,
-    nline:int=32,
-    nball:int=32,
-    count:int=128,
-    escape:bool=True,
-    limit:Optional[float]=None,
-    reduce:bool=True,
-    size:float=1.0E-2,
-    total:Optional[int]=None,
-    shuffle:bool=False,
-    perturb:bool=True,
-    extra:int=2**1,
-    radius:float=1.0E-3,
-    rounds:int=1) -> Array:
+def mask(data:Array, 
+         cut:int,
+         radius:float,
+         strict:bool=True) -> Array:
+    """
+    Mask escaped orbits 
+    
+    At least one NaN value appears after given number of iterations
+    Or initial is outside a hyperball with given radius
+
+    Parameters
+    ----------
+    data: Array
+        orbits
+    cut: int
+        threshold number of iterations
+    radius: float
+        escape radius
+    strict: bool, defaul=True
+        flag to include orbits where escape happens only after cut
+
+    """
+    _, length, _ = data.shape
+    cut = int(jax.numpy.clip(cut, 0, length))
+    is_nan = jax.numpy.isnan(data)
+    square = jax.numpy.sum((data*data), axis=-1)
+    nan = jax.numpy.any(is_nan[:, cut:, :], axis=(1, 2))
+    rad = jax.numpy.any(square[:, cut:] > (radius*radius), axis=1)
+    mask = nan | rad
+    if strict:
+        nan = ~jax.numpy.any(is_nan[:, :cut, :], axis=(1, 2))
+        rad = ~jax.numpy.any(square[:, :cut] > (radius*radius), axis=1)
+        mask = mask & (nan & rad)
+    return mask
+
+
+def construct(key:Array,
+              orders:List[int],
+              points:Array,
+              forward:Callable[..., Array],
+              inverse:Callable[..., Array],
+              *parameters,
+              jacobian:Optional[Callable] = None,
+              generate:bool=True,
+              scale:float=1.0E-3,
+              nline:int=8,
+              nball:int=16,
+              cut:int=4096,              
+              count:int=8192,
+              radius:float=1.0,
+              strict:bool=True,
+              reduce:bool=True,
+              size:float=1.0E-3,
+              total:int=10**9,
+              shuffle:bool=False) -> Array:
     """
     Build a dense enclosing cloud using manifolds of hyperbolic points
+
+    Rerun and combine results using different random keys
 
     Parameters
     ----------
@@ -313,32 +314,26 @@ def construct(
         flag to generate full fixed points chains
     scale: float, default=1.0E-3
         seeding radius in the manifold subspace
-    nline: int, default=32
+    nline: int, default=8
         number of seeds for 1D subspace
-    nball: int, default=32
+    nball: int, default=16
         number of seeds for ND subspace
-    count: int, default=128
+    cut: int, default=4096
+        minimum number of stable itereations
+    count: int, default=8192
         number of steps to propagate each seed
-    escape: bool, default=True
-        keep only seeds with final state escaped (NaN or radius test)
-    limit: Optional[float]
+    radius: float, default=1.0
         radius for escape test and cloud filtering
+    strict: bool, default=True
+        flag to apply strict mask
     reduce: bool, default=True
         downsample flag
-    size: float, default=1.0E-2
+    size: float, default=1.0E-3
         cube size
-    total: Optional[int]
-        max number of cloud points
-    shuffle: bool, default=True
+    total: int, deafult=10**9
+        total number of cloud points
+    shuffle: bool, default=False
         random shuffle flag
-    perturb: bool, default=True
-        perturbation flag
-    extra: int, default=2**1
-        number of new points per point in perturbation
-    radius: float, default=1.0E-3
-        perturbation radius
-    rounds: int, default=1
-        number of perturbation/downsampling/propagation rounds
 
     Returns
     -------
@@ -371,39 +366,21 @@ def construct(
         es, vs = combine(es, vs)
         bu = basis(es, vs, 'U')
         bs = basis(es, vs, 'S')
-        cu.append(sample_manifold(key, p, bu, scale=scale, nline=nline, nball=nball))
-        cs.append(sample_manifold(key, p, bs, scale=scale, nline=nline, nball=nball))
+        cu.append(sample(key, p, bu, scale=scale, nline=nline, nball=nball))
+        cs.append(sample(key, p, bs, scale=scale, nline=nline, nball=nball))
     cu = jax.numpy.concatenate(cu)
     cs = jax.numpy.concatenate(cs)
     gu = jax.jit(jax.vmap(chain(count, forward), (0, *(None,)*len(parameters))))
     gs = jax.jit(jax.vmap(chain(count, inverse), (0, *(None,)*len(parameters))))
-    wu, mu = advance(gu, cu, *parameters, limit=limit)
-    ws, ms = advance(gs, cs, *parameters, limit=limit)
-    if escape:
-        wu = wu[mu]
-        ws = ws[ms]
+    wu = gu(cu, *parameters)
+    ws = gs(cs, *parameters)
+    wu = wu[mask(wu, cut, radius, strict=strict)]
+    ws = ws[mask(ws, cut, radius, strict=strict)]
     wu = wu.reshape(-1, dimension)
     ws = ws.reshape(-1, dimension)
-    if limit:
-        wu = wu[jax.numpy.linalg.norm(wu, axis=1) < limit]
-        ws = ws[jax.numpy.linalg.norm(ws, axis=1) < limit]
     cloud = jax.numpy.concatenate([wu, ws])
+    cloud = cloud[~jax.numpy.isnan(jax.numpy.sum(cloud, axis=1))]
+    cloud = cloud[jax.numpy.linalg.norm(cloud, axis=1) < radius]
     if reduce:
         cloud = downsample(key, cloud, size=size, total=total, shuffle=shuffle)
-    if perturb:
-        for _ in range(rounds):
-            cp = perturbation(key, extra, radius, cloud)
-            wu, mu = advance(gu, cp, *parameters, limit=limit)
-            ws, ms = advance(gs, cp, *parameters, limit=limit)
-            if escape:
-                wu = wu[mu]
-                ws = ws[ms]
-            wu = wu.reshape(-1, dimension)
-            ws = ws.reshape(-1, dimension)
-            if limit:
-                wu = wu[jax.numpy.linalg.norm(wu, axis=1) < limit]
-                ws = ws[jax.numpy.linalg.norm(ws, axis=1) < limit]
-            cloud = jax.numpy.concatenate([cloud, wu, ws])
-            if reduce:
-                cloud = downsample(key, cloud, size=size, total=total, shuffle=shuffle)
     return cloud
