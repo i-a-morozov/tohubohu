@@ -2,13 +2,18 @@
 Version and aliases
 
 """
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 __all__ = [
     'nest',
     'nest_list',
     'fold',
     'fold_list',
+    'iterate',
+    'count',
+    'orbit',
+    'final',
+    'scan',
     'rem',
     'exponential',
     'cosine',
@@ -20,6 +25,9 @@ __all__ = [
     'hsvd',
     'fli',
     'ld',
+    'directions',
+    'da',
+    'refine',
     'iterate',
     'prime',
     'chain',
@@ -40,6 +48,12 @@ from tohubohu.functional import nest_list
 from tohubohu.functional import fold
 from tohubohu.functional import fold_list
 
+from tohubohu.scan import iterate
+from tohubohu.scan import count
+from tohubohu.scan import orbit
+from tohubohu.scan import final
+from tohubohu.scan import scan
+
 from tohubohu.rem import rem
 
 from tohubohu.filter import exponential
@@ -58,6 +72,10 @@ from tohubohu.hsvd import hsvd
 from tohubohu.fli import fli
 
 from tohubohu.ld import ld
+
+from tohubohu.da import directions
+from tohubohu.da import da
+from tohubohu.da import refine
 
 from tohubohu.fp import iterate
 from tohubohu.fp import prime
