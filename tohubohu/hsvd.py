@@ -59,7 +59,9 @@ def hsvd(n:int,
          length:Optional[int]=None,
          dimension:Optional[int]=None,
          normalize:bool=True,
-         background:float=1.0E-16) -> Callable[..., Array]:
+         background:float=1.0E-16,
+         sigma:float=0.0,
+         key:Optional[Array]=None) -> Callable[..., Array]:
     """
     H-SVD indicator factory
 
@@ -81,6 +83,10 @@ def hsvd(n:int,
         normalization flag
     background: float, default=1.0E-16
         singular values background (constant added to all singular values)
+    sigma: float, default=0.0
+        noise standard deviation
+    key: Optional[Array]
+        random key
 
     Returns
     -------
@@ -91,6 +97,9 @@ def hsvd(n:int,
     def closure(x: Array, *args: Any) -> Array:
         orbit = fixed(x, *args)
         sequence = observable(orbit)
+        if sigma != 0.0:
+            local = jax.random.PRNGKey(0) if key is None else key
+            sequence = sequence + sigma*jax.random.normal(local, sequence.shape, dtype=sequence.dtype)
         return svd_entropy(sequence,
                            delay=delay,
                            length=length,
