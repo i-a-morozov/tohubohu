@@ -43,6 +43,7 @@ JAX composable differentiable chaos indicators
    modules/gali.rst
    modules/embedding.rst
    modules/hsvd.rst
+   modules/fft.rst
    modules/fli.rst
    modules/fp.rst
 
