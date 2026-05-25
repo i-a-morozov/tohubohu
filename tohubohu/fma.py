@@ -18,8 +18,7 @@ from tohubohu.frequency import frequency
 def fma(length:int,
         weights: Array,
         mapping: Callable[..., Array], *,
-        sigma:float=0.0,
-        key:Optional[Array]=None) -> Callable[..., Array]:
+        sigma:float=0.0) -> Callable[..., Array]:
     """
     FMA factory (non-overlapping intervals)
 
@@ -33,21 +32,35 @@ def fma(length:int,
         state transformation mapping
     sigma: float, default=0.0
         noise standard deviation
-    key: Optional[Array]
-        random key
+
+    Notes
+    -----
+    If sigma is non-zero, the returned callable expects a random key:
+    ``closure(state, key, *args)``.
 
     Returns
     -------
     Callable[[Array, *Any], Array]
 
     """
-    fn = frequency(weights, mapping, final=True, sigma=sigma, key=key)
-    def closure(state: Array, *args: Any) -> Array:
-        def scan_body(carry: Array, _: Any) -> tuple[Array, Array]:
+    def indicator(state: Array, key: Optional[Array], *args: Any) -> Array:
+        keys = None
+        if sigma != 0.0:
+            keys = jax.random.split(key, length)
+        def scan_body(carry: Array, item: Array) -> tuple[Array, Array]:
+            local = item if keys is not None else None
+            fn = frequency(weights, mapping, final=True, sigma=sigma, key=local)
             carry, f = fn(carry, *args)
             return carry, f
-        _, fs = jax.lax.scan(scan_body, state, length=length)
+        items = keys if keys is not None else None
+        _, fs = jax.lax.scan(scan_body, state, items, length=length)
         return fs
+    if sigma == 0.0:
+        def closure(state: Array, *args: Any) -> Array:
+            return indicator(state, None, *args)
+        return closure
+    def closure(state: Array, key: Array, *args: Any) -> Array:
+        return indicator(state, key, *args)
     return closure
 
 

@@ -60,8 +60,7 @@ def hsvd(n:int,
          dimension:Optional[int]=None,
          normalize:bool=True,
          background:float=1.0E-16,
-         sigma:float=0.0,
-         key:Optional[Array]=None) -> Callable[..., Array]:
+         sigma:float=0.0) -> Callable[..., Array]:
     """
     H-SVD indicator factory
 
@@ -85,8 +84,11 @@ def hsvd(n:int,
         singular values background (constant added to all singular values)
     sigma: float, default=0.0
         noise standard deviation
-    key: Optional[Array]
-        random key
+
+    Notes
+    -----
+    If sigma is non-zero, the returned callable expects a random key:
+    ``closure(x, key, *args)``.
 
     Returns
     -------
@@ -94,16 +96,21 @@ def hsvd(n:int,
 
     """
     fixed = nest_list(n, mapping)
-    def closure(x: Array, *args: Any) -> Array:
+    def indicator(x: Array, key: Optional[Array], *args: Any) -> Array:
         orbit = fixed(x, *args)
         sequence = observable(orbit)
         if sigma != 0.0:
-            local = jax.random.PRNGKey(0) if key is None else key
-            sequence = sequence + sigma*jax.random.normal(local, sequence.shape, dtype=sequence.dtype)
+            sequence = sequence + sigma*jax.random.normal(key, sequence.shape, dtype=sequence.dtype)
         return svd_entropy(sequence,
                            delay=delay,
                            length=length,
                            dimension=dimension,
                            normalize=normalize,
                            background=background)
+    if sigma == 0.0:
+        def closure(x: Array, *args: Any) -> Array:
+            return indicator(x, None, *args)
+        return closure
+    def closure(x: Array, key: Array, *args: Any) -> Array:
+        return indicator(x, key, *args)
     return closure
