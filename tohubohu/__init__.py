@@ -24,6 +24,8 @@ __all__ = [
     'gali',
     'hsvd',
     'fft',
+    'hurst',
+    'hexp',
     'fli',
     'ld',
     'directions',
@@ -71,6 +73,9 @@ from tohubohu.gali import gali
 from tohubohu.hsvd import hsvd
 
 from tohubohu.fft import fft
+
+from tohubohu.hurst import hurst
+from tohubohu.hurst import hexp
 
 from tohubohu.fli import fli
 

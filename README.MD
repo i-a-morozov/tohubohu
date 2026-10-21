@@ -57,3 +57,7 @@ $ pip install git+https://github.com/i-a-morozov/tohubohu.git@main
 [Example-20: Mode locking](./docs/source/examples/example-19.ipynb)
 
 [Example-21: Periodic fixed points (4D accelerator mapping)](./docs/source/examples/example-20.ipynb)
+
+[Example-23: FFT spectral entropy](./docs/source/examples/example-22.ipynb)
+
+[Example-24: Hurst exponent](./docs/source/examples/example-23.ipynb)
