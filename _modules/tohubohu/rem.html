@@ -105,13 +105,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for tohubohu.rem</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">REM</span>
 <span class="sd">---</span>
 
 <span class="sd">Reverse error method indicator factory</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
@@ -126,7 +126,7 @@
         <span class="n">forward</span><span class="p">:</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">],</span>
         <span class="n">inverse</span><span class="p">:</span><span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span>
         <span class="n">epsilon</span><span class="p">:</span><span class="nb">float</span><span class="o">=</span><span class="mf">1.0E-16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Array</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Reverse error method (REM) factory</span>
 
 <span class="sd">    Parameters</span>
@@ -144,7 +144,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    Callable[[Array, *Any], Array]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">fn_inverse</span> <span class="o">=</span> <span class="n">nest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">inverse</span><span class="p">)</span>
     <span class="n">fn_forward</span> <span class="o">=</span> <span class="n">nest</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">forward</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">closure</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Array</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Array</span><span class="p">:</span>
