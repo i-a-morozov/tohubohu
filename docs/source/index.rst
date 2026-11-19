@@ -29,6 +29,9 @@ JAX composable differentiable chaos indicators
    examples/example-19.ipynb
    examples/example-20.ipynb
    examples/example-21.ipynb
+   examples/example-22.ipynb
+   examples/example-23.ipynb
+   examples/example-24.ipynb
 
 .. toctree::
    :caption: API:
@@ -44,6 +47,7 @@ JAX composable differentiable chaos indicators
    modules/embedding.rst
    modules/hsvd.rst
    modules/fft.rst
+   modules/hurst.rst
    modules/fli.rst
    modules/fp.rst
 

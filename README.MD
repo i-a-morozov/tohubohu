@@ -61,3 +61,5 @@ $ pip install git+https://github.com/i-a-morozov/tohubohu.git@main
 [Example-23: FFT spectral entropy](./docs/source/examples/example-22.ipynb)
 
 [Example-24: Hurst exponent](./docs/source/examples/example-23.ipynb)
+
+[Example-25: FMA, SVD entropy, FFT entropy and Hurst with noise](./docs/source/examples/example-24.ipynb)
